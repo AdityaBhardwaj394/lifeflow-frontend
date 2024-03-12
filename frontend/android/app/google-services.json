@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "740639993645",
+    "project_id": "lifeflow-frontend",
+    "storage_bucket": "lifeflow-frontend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740639993645:android:b972cf572c181ba6986da4",
+        "android_client_info": {
+          "package_name": "com.frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNVRed27-KNuSYvCKzK-QC8FHpsJ48Ep4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
