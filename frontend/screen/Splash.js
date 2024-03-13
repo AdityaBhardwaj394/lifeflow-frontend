@@ -17,7 +17,6 @@ const Splash = ({navigation}) => {
         if (res) {
           Geolocation.getCurrentPosition(
             position => {
-              console.log(position);
               dispatch(setUserLocation({latitude:position.coords.latitude,longitude:position.coords.longitude}))
             },
             error => {
@@ -41,7 +40,7 @@ const Splash = ({navigation}) => {
         console.log('User is already logged in')
 
         getLocation();
-        navigation.navigate('Home');
+        navigation.navigate('TabNavigator');
         
       }
       else navigation.navigate('DashBoard');

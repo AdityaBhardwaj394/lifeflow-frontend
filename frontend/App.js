@@ -13,7 +13,7 @@ import RequestBlood from './screen/RequestBlood';
 import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import TabNavigator from './screen/TabNavigator';
-
+import BBRegisterSearch from './screen/Register/BBRegisterSearch';
 import UserRegister from './screen/Register/UserRegister'
 import BBRegister from './screen/Register/BBRegister'
 import Chatuser from './screen/chat/Chatuser'
@@ -26,7 +26,7 @@ const App = () => {
     <Provider store={store}>
     <NavigationContainer>
     <Stack.Navigator
-    initialRouteName="TabNavigator"
+    initialRouteName="Splash"
     screenOptions={{ headerShown: false }} >
       <Stack.Screen name="chat" component={Chatuser}/>
       <Stack.Screen name="Splash" component={Splash}/>
@@ -38,6 +38,7 @@ const App = () => {
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
       <Stack.Screen name="Home" component={Home}/>
       <Stack.Screen name="Profile" component={Profile}/>
+      <Stack.Screen name="BBRegisterSearch" component={BBRegisterSearch}/>
     </Stack.Navigator>
     </NavigationContainer>
     </Provider>
