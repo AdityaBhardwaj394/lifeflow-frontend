@@ -1,13 +1,31 @@
-import { View, Text, Button } from 'react-native'
 import React from 'react'
+import Background from '../components/Background'
+// import Logo from '../components/Logo'
+// import Header from '../components/Header'
+import Button from '../components/Button'
+// import Paragraph from '../components/Paragraph'
 
-const DashBoard = ({navigation}) => {
+export default function DashBoard({navigation}) {
+
   return (
-    <View>
-      <Button title="Go to Login" onPress={()=>navigation.navigate('login')}/>
-      <Button title='Go to Register' onPress={()=>navigation.navigate('register')}/>
-    </View>
+    <Background>
+      {/* <Logo /> */}
+      {/* <Header>CAS Venger</Header> */}
+      {/* <Paragraph>
+        Tetrahedron
+      </Paragraph> */}
+      <Button
+        mode="contained"
+        onPress={() => navigation.navigate('login')}
+      >
+        Login
+      </Button>
+      <Button
+        mode="outlined"
+        onPress={() => navigation.navigate('register')}
+      >
+        Sign Up
+      </Button>
+    </Background>
   )
 }
-
-export default DashBoard;
