@@ -18,7 +18,7 @@ const Login = ({navigation}) => {
       
       console.log('user logged in')
 
-      navigation.navigate('Home');
+      navigation.navigate('TabNavigator');
     }
   }
   return (

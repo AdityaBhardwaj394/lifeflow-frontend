@@ -9,7 +9,7 @@ const UserRegister = ({navigation}) => {
   const register= async ()=>{
     await auth().createUserWithEmailAndPassword(email,password).then(
       ()=>{
-         navigation.navigation('login')
+         navigation.navigate('login')
       }
     ).catch(err=>{
       if (err.code === 'auth/email-already-in-use') {

@@ -1,6 +1,7 @@
 import { View, Text, Button } from 'react-native'
 import React from 'react'
 import auth from '@react-native-firebase/auth'
+import Header from './Header';
 const Home = ({navigation}) => {
   const logout =async()=>{
     await auth().signOut().then(()=>{
@@ -10,11 +11,12 @@ const Home = ({navigation}) => {
   }
   return (
     <View>
-
+    <Header navigation ={navigation}/>
       <Button title="Go to chat" onPress={()=>navigation.navigate('chat')}/>
       <Button title='logout' onPress={logout}/>
     </View>
+ 
   )
-}
+};
 
 export default Home;

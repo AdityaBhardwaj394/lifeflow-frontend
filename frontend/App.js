@@ -1,14 +1,21 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from './screen/Home'
 import DashBoard from './screen/DashBoard'
 import Login from './screen/Login'
 import Register from './screen/Register'
 import Splash from './screen/Splash'
+import Profile from './screen/Profile';
+import Donor from './screen/Donor';
+import RequestBlood from './screen/RequestBlood';
+import { NavigationContainer } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import TabNavigator from './screen/TabNavigator';
+
 import UserRegister from './screen/Register/UserRegister'
 import BBRegister from './screen/Register/BBRegister'
-import { NavigationContainer } from '@react-navigation/native';
 import Chatuser from './screen/chat/Chatuser'
 import { Provider } from 'react-redux'
 import store from './store/store'
@@ -19,15 +26,18 @@ const App = () => {
     <Provider store={store}>
     <NavigationContainer>
     <Stack.Navigator
-    initialRouteName="Splash">
+    initialRouteName="TabNavigator"
+    screenOptions={{ headerShown: false }} >
       <Stack.Screen name="chat" component={Chatuser}/>
-      <Stack.Screen name="Home" component={Home}/>
       <Stack.Screen name="Splash" component={Splash}/>
       <Stack.Screen name="DashBoard" component={DashBoard}/>
       <Stack.Screen name="BBRegister" component={BBRegister}/>
       <Stack.Screen name="UserRegister" component={UserRegister}/>
       <Stack.Screen name="login" component={Login}/>
       <Stack.Screen name="register" component={Register}/>
+      <Stack.Screen name="TabNavigator" component={TabNavigator} />
+      <Stack.Screen name="Home" component={Home}/>
+      <Stack.Screen name="Profile" component={Profile}/>
     </Stack.Navigator>
     </NavigationContainer>
     </Provider>
