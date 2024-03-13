@@ -1705,6 +1705,11 @@
   dependencies:
     plist "^3.1.0"
 
+"@react-native-firebase/storage@^19.0.1":
+  version "19.0.1"
+  resolved "https://registry.npmjs.org/@react-native-firebase/storage/-/storage-19.0.1.tgz"
+  integrity sha512-b1k1iN1bp8oLnSMctJ4dj32eTsBNVZUKYGAeKiFECZwebJyMKfsHLilI3LSlmRagfqzMEc0uQAcEKHLMl2E18Q==
+
 "@react-native-masked-view/masked-view@^0.3.1":
   version "0.3.1"
   resolved "https://registry.npmjs.org/@react-native-masked-view/masked-view/-/masked-view-0.3.1.tgz"

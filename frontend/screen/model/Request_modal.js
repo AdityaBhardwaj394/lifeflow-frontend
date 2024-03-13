@@ -1,31 +1,50 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Modal, Pressable, StyleSheet } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
-
+import { utils } from '@react-native-firebase/app';
+import storage from '@react-native-firebase/storage';
 const RequestModal = ({ navigation, hospital, visible, setVisible }) => {
   const [message, setMessage] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
 
+  const [selectedFile, setSelectedFile] = useState({});
   const handleYesPress = () => {
+    
+    
     setVisible(false);
     // Add your logic for handling the request here
   };
+  
+  const pickFile = async () => {
+    try{
+      const fileDetails= await DocumentPicker.pickSingle({
+        type:[DocumentPicker.types.images],
+        copyTo:"cachesDirectory",
+      })
+      console.log(fileDetails);
+      setSelectedFile(fileDetails);
+    }catch(err){
+      setSelectedFile({});
+      console.log(err);
 
-  const handleFileUpload = async () => {
-    try {
-      const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
-      });
-      setSelectedFile(res);
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        // User cancelled the picker
-      } else {
-        // Handle other errors
-        console.error(err);
-      }
     }
   };
+  const uploadImages=async()=>{
+    try{
+      const reference = storage().ref(`${selectedFile.name}`);
+      const task =reference.putFile(selectedFile.fileCopyUri.replace('file://',''));
+      task.on('state_changed',taskSnapshot=>{
+        console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
+      });
+      task.then(async()=>{
+        const url=await reference.getDownloadURL();
+        console.log(url);
+      });
+    }catch(err){
+      console.log(err);
+    
+    }
+
+  }
 
   return (
     <View style={styles.centeredView}>
@@ -44,7 +63,7 @@ const RequestModal = ({ navigation, hospital, visible, setVisible }) => {
               value={message}
               onChangeText={setMessage}
             />
-            <Button title="Upload Proof" onPress={handleFileUpload} />
+            <Button title="Upload Proof" onPress={pickFile} />
             {selectedFile && <Text>Selected File: {selectedFile.name}</Text>}
             <View style={{ flexDirection: 'row', marginTop: 10 }}>
               <Pressable
@@ -57,7 +76,7 @@ const RequestModal = ({ navigation, hospital, visible, setVisible }) => {
                 style={[styles.button, styles.buttonClose2]}
                 onPress={handleYesPress}
               >
-                <Text style={styles.textStyle}>Send</Text>
+                <Text style={styles.textStyle} onPress={uploadImages}>Send</Text>
               </Pressable>
             </View>
           </View>
