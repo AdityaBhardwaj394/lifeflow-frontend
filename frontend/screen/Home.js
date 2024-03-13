@@ -1,21 +1,19 @@
-import { View, Text, Image,Button } from 'react-native'
+import { View, Text, Button } from 'react-native'
 import React from 'react'
+import auth from '@react-native-firebase/auth'
 import Header from './Header';
 const Home = ({navigation}) => {
+  const logout =async()=>{
+    await auth().signOut().then(()=>{
+      console.log('user logged out successfully')
+      navigation.navigate('login')
+    })
+  }
   return (
     <View>
-        <Header navigation ={navigation}/>
-
-       <View style={{ flexDirection: 'row', justifyContent: 'space-around', padding: 10 }}>
-          <Button title="Schedule Donation" onPress={() => navigation.navigate('ScheduleDonation')} />
-         <Button title="Track Upcoming Donation" disabled={true} /> 
-       </View>
-
-       <View style={{ padding: 10 }}>
-         <Text>Blood Type: O+</Text>
-         <Text>Last Donation: 2024-02-14</Text>
-      </View>
-
+    <Header navigation ={navigation}/>
+      <Button title="Go to chat" onPress={()=>navigation.navigate('chat')}/>
+      <Button title='logout' onPress={logout}/>
     </View>
  
   )

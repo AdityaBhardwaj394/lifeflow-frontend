@@ -14,16 +14,25 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import TabNavigator from './screen/TabNavigator';
 
+import UserRegister from './screen/Register/UserRegister'
+import BBRegister from './screen/Register/BBRegister'
+import Chatuser from './screen/chat/Chatuser'
+import { Provider } from 'react-redux'
+import store from './store/store'
 const Stack=createStackNavigator();
 
 const App = () => {
   return (
+    <Provider store={store}>
     <NavigationContainer>
     <Stack.Navigator
     initialRouteName="TabNavigator"
     screenOptions={{ headerShown: false }} >
+      <Stack.Screen name="chat" component={Chatuser}/>
       <Stack.Screen name="Splash" component={Splash}/>
       <Stack.Screen name="DashBoard" component={DashBoard}/>
+      <Stack.Screen name="BBRegister" component={BBRegister}/>
+      <Stack.Screen name="UserRegister" component={UserRegister}/>
       <Stack.Screen name="login" component={Login}/>
       <Stack.Screen name="register" component={Register}/>
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
@@ -31,6 +40,7 @@ const App = () => {
       <Stack.Screen name="Profile" component={Profile}/>
     </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
   )
 }
 

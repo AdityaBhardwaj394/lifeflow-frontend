@@ -1,22 +1,45 @@
-import { View, Text,StyleSheet,TextInput,Button } from 'react-native'
+import { View, Text,StyleSheet,TextInput,Button,Image } from 'react-native'
 import { useState,useEffect } from 'react'
+import { useSelector } from 'react-redux';
 import React from 'react'
 import api from './api.js';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const Profile = () => {
+  const userEmail = useSelector(state=>state.user.email);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [age, setAge] = useState(''); // Add other data fields as needed
+  const [id,setId] = useState('');
+  const [dob, setAge] = useState(''); 
+  const [phone_number,setPhone]=useState('')
+  const [blood_group,setBg] = useState('')
+  const [sex,setSex] = useState('')
+  const [profile_url,setProfileurl] = useState('');
+  const [location, setLocation] = useState('')
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  
+  // const url = require('./app-logo-jpeg');
+  // setProfileurl(url);
+  // console.log(userEmail);
   useEffect(()=>{
+
+    setEmail(userEmail);
+    console.log("email",email);
+    
+
     const getData = async() => {
       setError(null);
       try{
-      const response = await api.get(`/user_e/${email}`);
+      const response = await api.get(`/user_e/${userEmail}`);
       setName(response.data.name);
-      setAge(response.data.dob)
+      setAge(response.data.dob);
+      setId(response.data.id);
+      setBg(response.data.blood_group);
+      setSex(response.data.sex);
+      setProfileurl(response.data.profilePhoto);
+      setPhone(response.data.phone_number);
+      setLocation(response.data.location);
     }
     catch (err) {
       console.error('Error submitting data:', err);
@@ -25,13 +48,26 @@ const Profile = () => {
     }
 
     getData(); 
-  },[])  
+  },[]) 
+
+
   const updateData = async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      await api.post(`/user_e/${email}`,data); 
+      const data={
+        email,
+        name,
+        dob,
+        phone_number,
+        blood_group,
+        sex ,
+        profile_url,
+        location,
+      }
+      console.log(data.profile_url);
+      await api.patch(`/user/${id}`,data); 
     } catch (err) {
       console.error('Error submitting data:', err);
       setError('Failed to submit data. Please try again.');
@@ -40,11 +76,41 @@ const Profile = () => {
     }
   };
 
+  const handleChoosePhoto = () => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+
+    launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        const source = response.assets[0].uri;
+        console.log("source",response.assets[0].uri);
+        setProfileurl(source);
+      }
+    });
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Profile</Text>
 
-      {/* Email Input */}
+      <View style={styles.profilePhotoContainer}>
+        <Image
+          source={profile_url ? ({uri: profile_url}):require('./app-logo.jpeg')}
+          style={styles.profilePhoto}
+          resizeMode="cover"
+        />
+        <Button title="Upload Photo" onPress={handleChoosePhoto} />
+      </View>
+
+      
       <TextInput
         style={styles.textInput}
         placeholder="Email"
@@ -52,8 +118,6 @@ const Profile = () => {
         value={email}
         onChangeText={setEmail}
       />
-
-      {/* Other Data Input Fields */}
       <TextInput
         style={styles.textInput}
         placeholder="Name"
@@ -62,15 +126,34 @@ const Profile = () => {
       />
       <TextInput
         style={styles.textInput}
+        placeholder="Blood group"
+        value={blood_group}
+        onChangeText={setBg}
+      />
+      <TextInput
+        style={styles.textInput}
+        placeholder="Sex"
+        value={sex}
+        onChangeText={setSex}
+      />
+      <TextInput
+        style={styles.textInput}
         placeholder="Age"
         keyboardType="numeric"
-        value={age}
+        value={dob}
         onChangeText={setAge}
+      />
+      <TextInput
+        style={styles.textInput}
+        placeholder="Phone Number"
+        keyboardType="numeric"
+        value={phone_number}
+        onChangeText={setPhone}
       />
       {/* Add input fields for other data as needed */}
 
       {/* <Button title="Submit Data"  disabled={isLoading} /> */}
-      {/* <Button title="Update Data" onPress={updateData} disabled={isLoading} /> */}
+      <Button title="Update Data" onPress={updateData} disabled={isLoading} />
       {isLoading && <Text>Loading...</Text>}
       {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
@@ -94,6 +177,16 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
+  },
+  profilePhotoContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  profilePhoto: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    marginBottom: 10,
   },
 });
 
