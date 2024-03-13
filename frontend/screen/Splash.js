@@ -17,7 +17,6 @@ const Splash = ({navigation}) => {
         if (res) {
           Geolocation.getCurrentPosition(
             position => {
-              console.log(position);
               dispatch(setUserLocation({latitude:position.coords.latitude,longitude:position.coords.longitude}))
             },
             error => {

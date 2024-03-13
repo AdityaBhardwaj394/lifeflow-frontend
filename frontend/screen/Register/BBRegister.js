@@ -1,7 +1,9 @@
-import { View, Text } from 'react-native'
+import { TextInput,View, Text } from 'react-native'
 import React from 'react'
 
 const BBRegister = () => {
+
+  
   return (
     <View>
        <View>

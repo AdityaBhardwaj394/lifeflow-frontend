@@ -6,13 +6,13 @@ const Home = ({navigation}) => {
   const logout =async()=>{
     await auth().signOut().then(()=>{
       console.log('user logged out successfully')
-      navigation.navigate('login')
+      navigation.navigate('DashBoard')
     })
   }
   return (
     <View>
     <Header navigation ={navigation}/>
-      <Button title="Go to chat" onPress={()=>navigation.navigate('chat')}/>
+      <Button title="Go to chat" onPress={()=>navigation.navigate('BBRegisterSearch')}/>
       <Button title='logout' onPress={logout}/>
     </View>
  
