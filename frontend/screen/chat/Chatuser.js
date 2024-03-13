@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { View, TextInput, Button } from 'react-native';
-import io from 'socket.io-client';
+import { useSelector } from 'react-redux';
+import {io} from 'socket.io-client';
 
 const Chatuser = () => {
+  const location=useSelector(state=>state.user.location)
+ console.log(location)
   const [socket, setSocket] = useState(null);
   const [message, setMessage] = useState('');
   const [senderEmail, setSenderEmail] = useState('');
-  console.log(socket)
+  // console.log(socket);
   useEffect(() => {
     const newSocket = io('http://localhost:3000');
     setSocket(newSocket);

@@ -3,7 +3,12 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     
     email: "default@example.com",
-    uid : "defaultUID"
+    uid : "defaultUID",
+    location:{
+        latitude: 0,
+        longitude: 0
+    
+    }
 };
 
 const userSlice = createSlice({
@@ -16,9 +21,18 @@ const userSlice = createSlice({
         },
         setUserUIDRedux(state , action){
             state.uid = action.payload;
+        },
+        setUserLocation(state,action){
+            let latitude=action.payload.latitude;
+            let longitude=action.payload.longitude;
+            state.location={
+                latitude:latitude,
+                longitude:longitude
+            
+            }
         }
     }
 })
 
 export default userSlice.reducer;
-export const {  setUserEmailRedux , setUserUIDRedux } = userSlice.actions;
+export const { setUserLocation, setUserEmailRedux , setUserUIDRedux } = userSlice.actions;
