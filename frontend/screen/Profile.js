@@ -1,4 +1,4 @@
-import { View, Text,StyleSheet,TextInput,Button,Image } from 'react-native'
+import { View, Text,StyleSheet,TextInput,Button,Image,ActivityIndicator } from 'react-native'
 import { useState,useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import React from 'react'
@@ -7,6 +7,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 
 const Profile = () => {
   const userEmail = useSelector(state=>state.user.email);
+  const userLocation = useSelector(state=>state.user.location);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [id,setId] = useState('');
@@ -25,8 +26,9 @@ const Profile = () => {
   useEffect(()=>{
 
     setEmail(userEmail);
+    setLocation(userLocation);
+    console.log("location",location);
     console.log("email",email);
-    
 
     const getData = async() => {
       setError(null);
@@ -39,7 +41,6 @@ const Profile = () => {
       setSex(response.data.sex);
       setProfileurl(response.data.profilePhoto);
       setPhone(response.data.phone_number);
-      setLocation(response.data.location);
     }
     catch (err) {
       console.error('Error submitting data:', err);
@@ -150,6 +151,7 @@ const Profile = () => {
         value={phone_number}
         onChangeText={setPhone}
       />
+
       {/* Add input fields for other data as needed */}
 
       {/* <Button title="Submit Data"  disabled={isLoading} /> */}

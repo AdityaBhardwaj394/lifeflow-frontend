@@ -41,7 +41,7 @@ const Splash = ({navigation}) => {
         console.log('User is already logged in')
 
         getLocation();
-        navigation.navigate('Home');
+        navigation.navigate('TabNavigator');
         
       }
       else navigation.navigate('DashBoard');

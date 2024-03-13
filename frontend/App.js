@@ -26,7 +26,7 @@ const App = () => {
     <Provider store={store}>
     <NavigationContainer>
     <Stack.Navigator
-    initialRouteName="TabNavigator"
+    initialRouteName="Splash"
     screenOptions={{ headerShown: false }} >
       <Stack.Screen name="chat" component={Chatuser}/>
       <Stack.Screen name="Splash" component={Splash}/>
