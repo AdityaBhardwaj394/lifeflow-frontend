@@ -9,7 +9,7 @@ import api from '../api';
 const RequestModal = ({ navigation,route, hospital, visible, setVisible }) => {
   const userEmail = useSelector(state=>state.user.email);
   const userName = useSelector(state=>state.profile.name);
-  const userbg = useSelector(state=>state.profile.blood_group)
+  const userbg = useSelector(state=>state.profile.BloodGroup)
   const [message, setMessage] = useState('');
   const [isDonating,setIsDonating] = useState(0);
   const [selectedFile, setSelectedFile] = useState({});
@@ -114,13 +114,13 @@ const RequestModal = ({ navigation,route, hospital, visible, setVisible }) => {
             {isDonating ?
             <View>
               <TextInput
-            style={styles.textArea}
+            // style={styles.textArea}
             placeholder="Name"
             value={userName}
             />
 
             <TextInput
-            style={styles.textArea}
+            // style={styles.textArea}
             placeholder="Blood group"
             value={userbg}
             />
