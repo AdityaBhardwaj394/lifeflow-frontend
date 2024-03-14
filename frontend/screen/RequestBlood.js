@@ -13,8 +13,9 @@ const RequestBlood = ({ navigation ,route }) => {
 
   useMemo(() => {
     axios
-      .get(`http://192.168.1.65:8001/locations?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000`)
+      .get(`http://192.168.1.58:8001/locations?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000`)
       .then((result) => {
+        console.log(result.data)
         setRes(result.data);
       });
   }, []);
