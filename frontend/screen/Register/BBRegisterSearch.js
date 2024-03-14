@@ -11,7 +11,8 @@ const BBRegisterSearch = ({navigation}) => {
   
   const handleChange = text => {
     onChangeText(text);
-    // console.log(lat,lon)
+    console.log(lat,lon)
+    
     axios
       .get(
         `http://192.168.1.65:8001/search?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000&q=${text}`,
