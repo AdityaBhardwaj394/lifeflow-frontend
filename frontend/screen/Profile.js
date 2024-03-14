@@ -1,11 +1,13 @@
 import { View, Text,StyleSheet,TextInput,Button,Image } from 'react-native'
 import { useState,useEffect } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React from 'react'
 import api from './api.js';
 import {launchImageLibrary} from 'react-native-image-picker';
+import { setBloodGroupRedux, setNameRedux } from '../store/profileSlice.js';
 
 const Profile = () => {
+  const dispatch=useDispatch();
   const userEmail = useSelector(state=>state.user.email);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -67,7 +69,10 @@ const Profile = () => {
         location,
       }
       console.log(data.profile_url);
+
       await api.patch(`/user/${id}`,data); 
+      dispatch(setNameRedux(name));
+      dispatch(setBloodGroupRedux(blood_group));
     } catch (err) {
       console.error('Error submitting data:', err);
       setError('Failed to submit data. Please try again.');
