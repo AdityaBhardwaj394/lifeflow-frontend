@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, FlatList, Button, Pressable, StyleSheet, TextInput, Modal } from 'react-native';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import RequestModal from './model/Request_modal';
 
-const RequestBlood = ({ navigation }) => {
+const RequestBlood = ({ navigation ,route }) => {
   const [res, setRes] = useState([]);
   const [selectedHospital, setSelectedHospital] = useState(null);
   const [visible, setVisible] = useState(false);
   const lat = useSelector((state) => state.user.location.latitude);
   const lon = useSelector((state) => state.user.location.longitude);
 
-  useEffect(() => {
+  useMemo(() => {
     axios
-      .get(`http://192.168.1.127:8001/locations?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000`)
+      .get(`http://192.168.1.65:8001/locations?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000`)
       .then((result) => {
         setRes(result.data);
       });
@@ -41,6 +41,7 @@ const RequestBlood = ({ navigation }) => {
       {selectedHospital && (
         <RequestModal
           navigation={navigation}
+          route={route}
           hospital={selectedHospital}
           visible={visible}
           setVisible={setVisible}

@@ -1,15 +1,55 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, Modal, Pressable, StyleSheet } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
+import { useSelector } from 'react-redux';
 import { utils } from '@react-native-firebase/app';
 import storage from '@react-native-firebase/storage';
-const RequestModal = ({ navigation, hospital, visible, setVisible }) => {
-  const [message, setMessage] = useState('');
+import api from '../api';
 
+const RequestModal = ({ navigation,route, hospital, visible, setVisible }) => {
+  const userEmail = useSelector(state=>state.user.email);
+  const [message, setMessage] = useState('');
+  const [isDonating,setIsDonating] = useState(0);
   const [selectedFile, setSelectedFile] = useState({});
+  const [res, setRes] = useState([]);
+  const [err,setErr] =useState(null);
+  const vol =2;
+
+  useEffect(()=>{
+
+    if(route.name==="Donate")
+    {
+      setIsDonating(true);
+    }
+    console.log("navigation",route.name);
+    console.log(isDonating);
+
+    const getDonorData = async()=>{
+     const response =  await api.get(`/user_e/${userEmail}`);
+     setRes(response);
+    }
+  
+    getDonorData();
+  },[])
+
+    const sendDonorData= async()=>{
+      try{
+        const data={
+          userEmail
+        }
+        await api.post(`/donate/${hospital.id}?${vol.toString()}`,data);
+    }
+    catch(err)
+    {
+      console.log("Error submitting request" ,err);
+      setErr("Unable to submit");
+    }
+    finally{
+      setErr(null);
+    }
+  }
+
   const handleYesPress = () => {
-    
-    
     setVisible(false);
     // Add your logic for handling the request here
   };
@@ -55,8 +95,10 @@ const RequestModal = ({ navigation, hospital, visible, setVisible }) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>{hospital.poi.name}</Text>
-            <TextInput
+          <Text style={styles.modalText}>{hospital.poi.name}</Text>
+          {!isDonating ?
+          <View>
+              <TextInput
               style={styles.textArea}
               placeholder="Enter your message..."
               multiline={true}
@@ -64,20 +106,45 @@ const RequestModal = ({ navigation, hospital, visible, setVisible }) => {
               onChangeText={setMessage}
             />
             <Button title="Upload Proof" onPress={pickFile} />
-            {selectedFile && <Text>Selected File: {selectedFile.name}</Text>}
-            <View style={{ flexDirection: 'row', marginTop: 10 }}>
+            {selectedFile ? <Text>Selected File: {selectedFile.name}</Text>:null}
+            </View>:null }
+
+            {isDonating ?
+            <View>
+              <TextInput
+            style={styles.textArea}
+            placeholder="Name"
+            value={userEmail}
+            />
+
+            <TextInput
+            style={styles.textArea}
+            placeholder="Blood group"
+            value={userEmail}
+            />
+          </View>: null}
+
+             <View style={{ flexDirection: 'row', marginTop: 10 }}>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => setVisible(false)}
+                onPress={() => {setVisible(false)}}
               >
                 <Text style={styles.textStyle}>Cancel</Text>
               </Pressable>
-              <Pressable
+              
+              {isDonating ?<Pressable
                 style={[styles.button, styles.buttonClose2]}
+                onPress={sendDonorData}
+              >  
+              <View><Text style={styles.textStyle} onPress={sendDonorData}> Send</Text></View>
+                </Pressable> :null}
+
+              {!isDonating ? <Pressable
+              style={[styles.button, styles.buttonClose2]}
                 onPress={handleYesPress}
               >
-                <Text style={styles.textStyle} onPress={uploadImages}>Send</Text>
-              </Pressable>
+                <View><Text style={styles.textStyle} onPress={uploadImages}>Send</Text></View>
+              </Pressable>:null}
             </View>
           </View>
         </View>
