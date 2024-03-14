@@ -1,33 +1,78 @@
-import { View, Text, Button } from 'react-native'
-import React, { useState } from 'react'
-import { TextInput } from 'react-native-gesture-handler'
-import auth from '@react-native-firebase/auth'
-import { useDispatch } from 'react-redux'
-import { setUserEmailRedux,setUserUIDRedux } from '../store/userSlice'
-const Login = ({navigation}) => {
-  const dispatch = useDispatch();
-  const [password,setpassword] = useState('')
-  const [email,setEmail] = useState('')
-  const verifylogin=async()=>{
-    let res=await auth().signInWithEmailAndPassword(email,password)
-    
-    if(res && res.user){
-      console.log(res);
-      dispatch(setUserEmailRedux(res.user.email))
-      dispatch(setUserUIDRedux(res.user.uid))
-      
-      console.log('user logged in')
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { Text } from 'react-native-paper';
+import auth from '@react-native-firebase/auth';
+import TextInput from '../components/TextInput';
+import { useDispatch } from 'react-redux';
+import { theme } from '../theme/theme';
+import Button from '../components/Button';
+import Background from '../components/Background';
+import { setUserEmailRedux, setUserUIDRedux } from '../store/userSlice';
 
-      navigation.navigate('TabNavigator');
+export default function Login({ navigation }) {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
+
+  const verifylogin = async () => {
+    try {
+      setLoading(true);
+      let res = await auth().signInWithEmailAndPassword(email, password);
+      if (res && res.user) {
+        dispatch(setUserEmailRedux(res.user.email));
+        dispatch(setUserUIDRedux(res.user.uid));
+        console.log('user logged in');
+        navigation.navigate('TabNavigator');
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
+
   return (
-    <View>
-    <TextInput placeholder="Email"value={email} onChangeText={setEmail} />
-    <TextInput placeholder="password" value={password} onChangeText={setpassword}  />
-    <Button title="login" onPress={verifylogin} />
-  </View>
-  )
+    <Background>
+      <TextInput
+        label="Email"
+        returnKeyType="next"
+        value={email}
+        onChangeText={setEmail}
+        autoCapitalize="none"
+        autoCompleteType="email"
+        textContentType="emailAddress"
+        keyboardType="email-address"
+      />
+      <TextInput
+        label="Password"
+        returnKeyType="done"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+      <Button loading={loading} mode="contained" onPress={verifylogin}>
+        Login
+      </Button>
+      <View style={styles.row}>
+        <Text>Don't have an account? </Text>
+        <TouchableOpacity onPress={() => navigation.replace('register')}>
+          <Text style={styles.link}>Sign up</Text>
+        </TouchableOpacity>
+      </View>
+      <Text>{error}</Text>
+    </Background>
+  );
 }
 
-export default Login;
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    marginTop: 4,
+  },
+  link: {
+    fontWeight: 'bold',
+    color: theme.colors.primary,
+  },
+});
