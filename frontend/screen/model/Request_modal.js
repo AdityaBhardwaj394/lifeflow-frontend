@@ -8,6 +8,8 @@ import api from '../api';
 
 const RequestModal = ({ navigation,route, hospital, visible, setVisible }) => {
   const userEmail = useSelector(state=>state.user.email);
+  const userName = useSelector(state=>state.profile.name);
+  const userbg = useSelector(state=>state.profile.blood_group)
   const [message, setMessage] = useState('');
   const [isDonating,setIsDonating] = useState(0);
   const [selectedFile, setSelectedFile] = useState({});
@@ -114,13 +116,13 @@ const RequestModal = ({ navigation,route, hospital, visible, setVisible }) => {
               <TextInput
             style={styles.textArea}
             placeholder="Name"
-            value={userEmail}
+            value={userName}
             />
 
             <TextInput
             style={styles.textArea}
             placeholder="Blood group"
-            value={userEmail}
+            value={userbg}
             />
           </View>: null}
 
