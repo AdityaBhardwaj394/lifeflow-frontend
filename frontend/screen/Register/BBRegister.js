@@ -4,7 +4,7 @@ import Button from '../../components/Button';
 import TextInput from '../../components/TextInput';
 import Background from '../../components/Background';
 import { useDispatch } from 'react-redux';
-import { setBBNameRedux, setBBPhoneno, setBBemailRedux } from '../../store/hospitalSlice';
+import { setBBNameRedux, setBBPhoneno, setBBemailRedux, setBBreg_no } from '../../store/hospitalSlice';
 import axios from 'axios';
 const BBRegister = ({route,navigation}) => {
   const {hospital_ph,hospital_name,hospital_id,hospital_lat,hospital_lon}=route.params;
@@ -22,13 +22,14 @@ const BBRegister = ({route,navigation}) => {
         dispatch(setBBNameRedux(hospital_name));
         dispatch(setBBPhoneno(phone_number));
         dispatch(setBBemailRedux(email));
-        // axios.post('http://192.168.1.58:8001/entity/create', 
-        // {
-        //   "primary_email": email,
-        //   "primary_ph_no": phone_number,
-        //   "reg_number": hospital_id,
-        //   "name": "string"
-        // });
+        dispatch(setBBreg_no(reg_no));
+        axios.post('http://192.168.1.58:8001/entity/create', 
+        {
+          "primary_email": email,
+          "primary_ph_no": phone_number,
+          "reg_number": reg_no,
+          "name": hospital_name,
+        });
          navigation.navigate('login')
       }
     ).catch(err=>{
