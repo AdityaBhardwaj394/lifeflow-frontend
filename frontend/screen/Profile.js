@@ -33,15 +33,17 @@ const Profile = () => {
     const getData = async() => {
       setError(null);
       try{
-      const response = await api.get(`/user_e/${userEmail}`);
-      setName(response.data.name);
-      setAge(response.data.dob);
-      setId(response.data.id);
-      setBg(response.data.blood_group);
-      setSex(response.data.sex);
-      setProfileurl(response.data.profilePhoto);
-      setPhone(response.data.phone_number);
-      setLocation(response.data.location);
+        const response = await api.get(`/user_e/${userEmail}`);
+        setName(response.data.name);
+        setAge(response.data.dob);
+        setId(response.data.id);
+        setBg(response.data.blood_group);
+        setSex(response.data.sex);
+        setProfileurl(response.data.profilePhoto);
+        setPhone(response.data.phone_number);
+        setLocation(response.data.location);
+        dispatch(setNameRedux(response.data.name));
+        dispatch(setBloodGroupRedux(response.data.blood_group));
     }
     catch (err) {
       console.error('Error submitting data:', err);
@@ -71,8 +73,6 @@ const Profile = () => {
       console.log(data.profile_url);
 
       await api.patch(`/user/${id}`,data); 
-      dispatch(setNameRedux(name));
-      dispatch(setBloodGroupRedux(blood_group));
     } catch (err) {
       console.error('Error submitting data:', err);
       setError('Failed to submit data. Please try again.');

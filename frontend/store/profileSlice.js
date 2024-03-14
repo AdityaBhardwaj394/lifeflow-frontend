@@ -29,4 +29,4 @@ const profileSlice = createSlice({
 })
 
 export default  profileSlice.reducer;
-export const { setNameRedux,setBloodGroupRedux } = userSlice.actions;
+export const { setNameRedux,setBloodGroupRedux } = profileSlice.actions;
