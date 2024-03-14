@@ -50,6 +50,7 @@ const Profile = () => {
     catch (err) {
       console.error('Error submitting data:', err);
       setError('Failed to get data. Please refresh again.');
+      getData();
     }
     }
 
