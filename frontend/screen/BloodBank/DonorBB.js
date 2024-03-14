@@ -8,7 +8,7 @@ const DonorBB = () => {
   useEffect(()=>{
     const getData= async()=>{
       try{
-        const response = await api.get(`/donor/${id}`);
+        const response = await api.get(`/donors/${id}`);
       }
       catch(err)
       {
