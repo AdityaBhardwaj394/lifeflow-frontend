@@ -1,11 +1,12 @@
-import { View, Text } from 'react-native'
+import { View, Text ,FlatList,Button} from 'react-native'
 import React, { useEffect } from 'react'
 import api from './api'
 import { useSelector } from 'react-redux'
 import { useState } from 'react'
 
 const Donor = () => {
-  const [isLoading, setIsLoading] = useState('')
+  const [isLoading, setIsLoading] = useState('');
+  const  [res,setRes]=useState([]);
   const userLocation = useSelector(state=>state.user.location);
   const latitude = userLocation.latitude;
   const longitude = userLocation.latitude;
@@ -18,9 +19,8 @@ const Donor = () => {
 
     const getData = async()=>{
       try{
-        const response = await api.get(`/locations?${latitude}&${longitude}&${radius}`);
-        console.log("response",response.data.map(entry=> entry.poi.name));
-        console.log(response.data.poi.name)
+        const response = await api.get(`/locations?${latitude.toString()}&${longitude.toString()}&${radius}`);
+        setRes(response.data);
       }
       catch(err){
         console.log("Error retrieving data, " ,err);
@@ -32,9 +32,31 @@ const Donor = () => {
     getData();
   },[]);
 
+  
+
   return (
     <View>
-      <Text>Donor</Text>
+      <FlatList
+        data={res}
+        renderItem={({item}) => 
+
+        <View  style={{
+         
+          borderRadius:10,
+          borderColor:'black',
+          borderWidth:1,
+        }}>
+        <Text style={{
+          padding: 10,
+          fontSize: 18,
+        
+        }}>{item.poi.name}</Text>
+         <Text>availabe donors:{}</Text>
+        <Button title="Donate" onPress={()=>{
+          
+        }}/>
+        </View>
+  }/>
     </View>
   )
 }
