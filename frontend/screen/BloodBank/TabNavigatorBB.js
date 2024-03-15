@@ -5,13 +5,14 @@ import HomeBB from './HomeBB';
 import RecieverBB from './RecieverBB';
 const Tab = createBottomTabNavigator();
 
+
 const TabNavigatorBB = () => {
   return (
-    <Tab.Navigator initialRouteName='Donor' 
+    <Tab.Navigator initialRouteName='HomeBB' 
     screenOptions={{ headerShown: false }}>
-    <Tab.Screen name="Home" component={HomeBB} />
-    <Tab.Screen name="Reciever" component={RecieverBB} />
-    <Tab.Screen name="Donor" component={DonorBB} />
+    <Tab.Screen name="HomeBB" component={HomeBB} />
+    <Tab.Screen name="RecieverBB" component={RecieverBB}/>
+    <Tab.Screen name="DonorBB" component={DonorBB}/>
   </Tab.Navigator>
   )
 }

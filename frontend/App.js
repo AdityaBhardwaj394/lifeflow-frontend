@@ -24,7 +24,7 @@ const App = () => {
     <NavigationContainer>
     <Stack.Navigator
     initialRouteName="Splash"
-    screenOptions={{ headerShown: false }} >
+    screenOptions={{ headerShown: false }}>
       <Stack.Screen name="chat" component={Chatuser}/>
       <Stack.Screen name="Splash" component={Splash}/>
       <Stack.Screen name="DashBoard" component={DashBoard}/>
@@ -32,7 +32,8 @@ const App = () => {
       <Stack.Screen name="UserRegister" component={UserRegister}/>
       <Stack.Screen name="login" component={Login}/>
       <Stack.Screen name="register" component={Register}/>
-      <Stack.Screen name="TabNavigator" component={TabNavigator} />
+      <Stack.Screen name="TabNavigatorBB" component={TabNavigatorBB}/>
+      <Stack.Screen name="TabNavigator" component={TabNavigator}/>
       <Stack.Screen name="Home" component={Home}/>
       <Stack.Screen name="Profile" component={Profile}/>
       <Stack.Screen name="BBRegisterSearch" component={BBRegisterSearch}/>

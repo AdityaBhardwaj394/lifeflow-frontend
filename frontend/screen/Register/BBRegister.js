@@ -6,6 +6,7 @@ import Background from '../../components/Background';
 import Button from '../../components/Button';
 import TextInput from '../../components/TextInput';
 import { setBBNameRedux, setBBPhoneno, setBBemailRedux, setBBreg_no } from '../../store/hospitalSlice';
+
 const BBRegister = ({ route, navigation }) => {
   const { hospital_name,hospital_id} = route.params;
   // console.log(route.params)
@@ -17,6 +18,7 @@ const BBRegister = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
+  console.log("hospital id is",hospital_id);
   const register = async () => {
     try {
       // Create user with email and password

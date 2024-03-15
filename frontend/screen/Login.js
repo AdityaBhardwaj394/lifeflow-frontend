@@ -10,7 +10,8 @@ import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { setUserEmailRedux, setUserUIDRedux } from '../store/userSlice';
 import { theme } from '../theme/theme';
-export default function Login({navigation}) {
+
+export default function Login({ navigation }) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
