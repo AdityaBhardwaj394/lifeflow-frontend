@@ -5,15 +5,18 @@ import { io } from 'socket.io-client';
 import { socket } from './config';
 
 const Chatuser = () => {
+  const email = useSelector((state) => state.user.email);
   const location = useSelector((state) => state.user.location);
   const [message, setMessage] = useState('');
   const [senderEmail, setSenderEmail] = useState('');
   const [messages, setMessages] = useState([]);
 //  console.log(message);
   useEffect(() => {
+    if (socket) {
+      socket.emit('register', email); // Replace with the actual user's email
+    }
     socket.on('personal', (data) => {
-      console.log(data);
-
+      console.log("receivedmessage"+data);
       setMessages((prevMessages) => [...prevMessages, data]);
     });
   }, []);
@@ -24,13 +27,14 @@ const Chatuser = () => {
         senderEmail,
         message,
       };
-      // Update the state to include the new message
-      // setMessages((prevMessages) => [...prevMessages, newMessage]);
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
       
-      // // Emit the new message to the server
-      socket.emit('personal', newMessage);
-      
-      // Clear the message input fields
+      // Emit the message to the server
+      socket.emit('sendToUser', {
+        recipientEmail: 'aditya@gmail.com', // Replace with the actual recipient's email
+        message,
+      });
+
       setMessage('');
       setSenderEmail('');
     }
