@@ -1,13 +1,15 @@
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
-import TextInput from '../components/TextInput';
 import { useDispatch } from 'react-redux';
-import { theme } from '../theme/theme';
+import axios from 'axios';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import TextInput from '../components/TextInput';
 import Button from '../components/Button';
 import Background from '../components/Background';
 import { setUserEmailRedux, setUserUIDRedux } from '../store/userSlice';
+import { theme } from '../theme/theme';
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch();
@@ -19,12 +21,24 @@ export default function Login({ navigation }) {
   const verifylogin = async () => {
     try {
       setLoading(true);
-      let res = await auth().signInWithEmailAndPassword(email, password);
+      const res = await auth().signInWithEmailAndPassword(email, password);
       if (res && res.user) {
+        // try {
+        //   const result = await axios.get(`http://192.168.1.85:8001/entity/email/${res.user.email}`);
+        //   // console.log(result.data);
+        //   if (result.data.length > 0) {
+        //     console.log('go the hospital page');
+        //     await EncryptedStorage.setItem('hospital_email', JSON.stringify(result.data[0].primary_email));
+        //     navigation.navigate('TabNavigatorBB');
+        //   }
+        // } catch (err) {
+        //   console.log(err);
+        // }
+
         dispatch(setUserEmailRedux(res.user.email));
         dispatch(setUserUIDRedux(res.user.uid));
         console.log('user logged in');
-        navigation.navigate('TabNavigator');
+        navigation.navigate('Home');
       }
     } catch (err) {
       setError(err.message);

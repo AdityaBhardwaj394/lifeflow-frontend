@@ -7,6 +7,12 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import { setBloodGroupRedux, setNameRedux } from '../store/profileSlice.js';
 
 const Profile = () => {
+  const logout =async()=>{
+    await auth().signOut().then(()=>{
+      console.log('user logged out successfully')
+      navigation.navigate('DashBoard')
+    })
+  }
   const dispatch=useDispatch();
   const userEmail = useSelector(state=>state.user.email);
   const userLocation = useSelector(state=>state.user.location);
@@ -35,7 +41,8 @@ const Profile = () => {
     const getData = async() => {
       setError(null);
       try{
-        const response = await api.get(`/user_e/${userEmail}`);
+        const response = await api.get(`/user/email/${userEmail}`);
+        console.log("response"+response.data);
         setName(response.data.name);
         setAge(response.data.dob);
         setId(response.data.id);
@@ -48,7 +55,7 @@ const Profile = () => {
         dispatch(setBloodGroupRedux(response.data.blood_group));
     }
     catch (err) {
-      console.error('Error submitting data:', err);
+      console.error('Error getting data:', err);
       setError('Failed to get data. Please refresh again.');
     }
     }
@@ -60,21 +67,37 @@ const Profile = () => {
   const updateData = async () => {
     setIsLoading(true);
     setError(null);
-
+  
     try {
-      const data={
-        email,
-        name,
-        dob,
-        phone_number,
-        blood_group,
-        sex ,
-        profile_url,
-        location,
-      }
-      console.log(data.profile_url);
-
-      await api.patch(`/user/${id}`,data); 
+      const data = {
+        "name": "string",
+        "dob": "2024-03-15",
+        "email": "string",
+        "phone_number": "string",
+        "blood_group": "string",
+        "sex": "string",
+        "profile_url": "string",
+        "location": "string"
+      };
+      console.log(id);
+      console.log(data);
+      // Assuming `id` is a valid identifier for the user
+      await api.patch(`/user/${id}`, {
+        "name": "string",
+        "dob": "2024-03-15",
+        "email": "string",
+        "phone_number": "string",
+        "blood_group": "string",
+        "sex": "string",
+        "profile_url": "string",
+        "location": "string"
+      });
+  
+      // Optionally, dispatch an action to update Redux state
+      dispatch(setNameRedux(name));
+      dispatch(setBloodGroupRedux(blood_group));
+  
+      // Reset form fields or perform any other necessary actions
     } catch (err) {
       console.error('Error submitting data:', err);
       setError('Failed to submit data. Please try again.');
@@ -82,6 +105,7 @@ const Profile = () => {
       setIsLoading(false);
     }
   };
+  
 
   const handleChoosePhoto = () => {
     const options = {
@@ -164,6 +188,7 @@ const Profile = () => {
       <Button title="Update Data" onPress={updateData} disabled={isLoading} />
       {isLoading && <Text>Loading...</Text>}
       {error && <Text style={styles.errorText}>{error}</Text>}
+      <Button title='logout' onPress={logout}/>
     </View>
   );
 }

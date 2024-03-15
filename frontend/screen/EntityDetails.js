@@ -13,7 +13,7 @@ const EntityDetails = ({navigatoin,route}) => {
     useEffect(()=>{
         try{
             axios
-            .get(`http://192.168.1.137:8001/donors/bloodgroup/${id}?bg=A-`)
+            .get(`http://192.168.1.85:8001/donors/bloodgroup/${id}?bg=A-`)
               .then((result) => {
                 setTotalDonors(result.data.length);
               });
@@ -24,7 +24,7 @@ const EntityDetails = ({navigatoin,route}) => {
             }
             try{
               axios
-              .get(`http://192.168.1.137:8001/total_volume/${id}`)
+              .get(`http://192.168.1.85:8001/total_volume/${id}`)
                 .then((result) => {
                   setTotalVolume(result.data);
                   

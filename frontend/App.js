@@ -20,6 +20,7 @@ import Chatuser from './screen/chat/Chatuser'
 import EntityDetails from './screen/EntityDetails';
 import { Provider } from 'react-redux'
 import store from './store/store'
+import TabNavigatorBB from './screen/BloodBank/TabNavigatorBB';
 const Stack=createStackNavigator();
 
 const App = () => {
@@ -39,6 +40,7 @@ const App = () => {
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
       <Stack.Screen name="Home" component={Home}/>
       <Stack.Screen name="Profile" component={Profile}/>
+      <Stack.Screen name="TabnavigatorBB" component={TabNavigatorBB}/>
       <Stack.Screen name="BBRegisterSearch" component={BBRegisterSearch}/>
       <Stack.Screen name="EntityDetails" component={EntityDetails}/>
     </Stack.Navigator>

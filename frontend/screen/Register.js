@@ -20,8 +20,8 @@ const Register = ({ navigation }) => {
     setLoading(true);
     try {
       await auth().createUserWithEmailAndPassword(email, password);
-      await axios.post('http://192.168.1.58:8001/user/create', { email: email });
-      navigation.navigate('l');
+      await axios.post('http://192.168.1.85:8001/user/create', { email: email });
+      navigation.navigate('login');
     } catch (err) {
       if (err.code === 'auth/email-already-in-use') {
         setError('That email address is already in use!');
