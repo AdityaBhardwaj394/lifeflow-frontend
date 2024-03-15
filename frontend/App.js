@@ -17,6 +17,7 @@ import BBRegisterSearch from './screen/Register/BBRegisterSearch';
 import UserRegister from './screen/Register/UserRegister'
 import BBRegister from './screen/Register/BBRegister'
 import Chatuser from './screen/chat/Chatuser'
+import EntityDetails from './screen/EntityDetails';
 import { Provider } from 'react-redux'
 import store from './store/store'
 const Stack=createStackNavigator();
@@ -39,6 +40,7 @@ const App = () => {
       <Stack.Screen name="Home" component={Home}/>
       <Stack.Screen name="Profile" component={Profile}/>
       <Stack.Screen name="BBRegisterSearch" component={BBRegisterSearch}/>
+      <Stack.Screen name="EntityDetails" component={EntityDetails}/>
     </Stack.Navigator>
     </NavigationContainer>
     </Provider>

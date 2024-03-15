@@ -1,44 +1,52 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Button } from 'react-native';
+import { View, TextInput, Button, Text } from 'react-native';
 import { useSelector } from 'react-redux';
-import {io} from 'socket.io-client';
+import { io } from 'socket.io-client';
+import { socket } from './config';
 
 const Chatuser = () => {
-  const location=useSelector(state=>state.user.location)
- console.log(location)
-  const [socket, setSocket] = useState(null);
+  const location = useSelector((state) => state.user.location);
   const [message, setMessage] = useState('');
   const [senderEmail, setSenderEmail] = useState('');
-  // console.log(socket);
+  const [messages, setMessages] = useState([]);
+//  console.log(message);
   useEffect(() => {
-    const newSocket = io('http://localhost:3000');
-    setSocket(newSocket);
+    socket.on('personal', (data) => {
+      console.log(data);
 
-    newSocket.on('connect', () => {
-      console.log('Connected to server');
+      setMessages((prevMessages) => [...prevMessages, data]);
     });
-
-    newSocket.on('message', (msg) => {
-      console.log('Received message:', msg);
-    }); 
   }, []);
 
   const sendMessage = () => {
     if (socket) {
-      socket.emit('message', {
+      const newMessage = {
         senderEmail,
         message,
-      });
+      };
+      // Update the state to include the new message
+      // setMessages((prevMessages) => [...prevMessages, newMessage]);
+      
+      // // Emit the new message to the server
+      socket.emit('personal', newMessage);
+      
+      // Clear the message input fields
       setMessage('');
       setSenderEmail('');
     }
   };
+  
 
   return (
     <View>
       <TextInput placeholder='Enter message' value={message} onChangeText={setMessage} />
       <TextInput placeholder='Email' value={senderEmail} onChangeText={setSenderEmail} />
       <Button title='Send' onPress={sendMessage} />
+      {messages.map((msg, index) => (
+        <Text key={index} style={{ borderColor: 'black', borderWidth: 1 }}>
+          {msg.senderEmail}: {msg.message}
+        </Text>
+      ))}
     </View>
   );
 };
