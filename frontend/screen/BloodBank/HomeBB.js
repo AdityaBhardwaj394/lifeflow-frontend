@@ -3,7 +3,9 @@ import React from 'react'
 
 const HomeBB = () => {
   return (
-    
+    <View>
+      <Text>Home</Text>
+    </View>
   )
 }
 

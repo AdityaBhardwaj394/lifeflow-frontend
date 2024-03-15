@@ -8,6 +8,7 @@ import { theme } from '../theme/theme';
 import Button from '../components/Button';
 import Background from '../components/Background';
 import { setUserEmailRedux, setUserUIDRedux } from '../store/userSlice';
+import { setBBNameRedux,setBBPhoneno,setBBemailRedux } from '../store/hospitalSlice';
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch();
@@ -23,8 +24,9 @@ export default function Login({ navigation }) {
       if (res && res.user) {
         dispatch(setUserEmailRedux(res.user.email));
         dispatch(setUserUIDRedux(res.user.uid));
+
         console.log('user logged in');
-        navigation.navigate('TabNavigator');
+        navigation.navigate('TabNavigatorBB');
       }
     } catch (err) {
       setError(err.message);

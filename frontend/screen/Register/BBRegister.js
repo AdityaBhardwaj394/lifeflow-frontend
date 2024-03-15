@@ -7,6 +7,7 @@ import Background from '../../components/Background';
 import Button from '../../components/Button';
 import TextInput from '../../components/TextInput';
 import auth from '@react-native-firebase/auth'
+
 const BBRegister = ({ route, navigation }) => {
   const { hospital_name,hospital_id} = route.params;
   // console.log(route.params)
@@ -18,6 +19,7 @@ const BBRegister = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
+  console.log("hospital id is",hospital_id);
   const register = async () => {
     try {
       // Create user with email and password
@@ -30,7 +32,7 @@ const BBRegister = ({ route, navigation }) => {
       dispatch(setBBreg_no(reg_no));
       
       // Post data to the backend
-      axios.post(`http://192.168.1.136:8001/entity/create?tomtom_id=${hospital_id}`, {
+      axios.post(`http://192.168.1.47:8001/entity/create?tomtom_id=${hospital_id}`, {
         primary_email: email,
         primary_ph_no: phone_number,
         reg_number: reg_no,

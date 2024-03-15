@@ -57,7 +57,7 @@ const Donor = ({route,navigation}) => {
           padding: 10,
           fontSize: 18,
         
-        }}>{item.poi.name}</Text>
+        }}>{item}</Text>
          <Text>availabe donors:{}</Text>
         <Button title="Donate" onPress={()=>{
           handleDonate(item)
