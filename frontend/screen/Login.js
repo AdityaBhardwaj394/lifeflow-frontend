@@ -1,15 +1,16 @@
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
-import { Text } from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
-import TextInput from '../components/TextInput';
+import axios from 'axios';
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import { Text } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
-import { theme } from '../theme/theme';
-import Button from '../components/Button';
 import Background from '../components/Background';
+import Button from '../components/Button';
+import TextInput from '../components/TextInput';
 import { setUserEmailRedux, setUserUIDRedux } from '../store/userSlice';
-
-export default function Login({ navigation }) {
+import { theme } from '../theme/theme';
+export default function Login({navigation}) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
@@ -23,8 +24,38 @@ export default function Login({ navigation }) {
       if (res && res.user) {
         dispatch(setUserEmailRedux(res.user.email));
         dispatch(setUserUIDRedux(res.user.uid));
-        console.log('user logged in');
-        navigation.navigate('TabNavigator');
+        //console.log('user logged in');
+        let status = 'none';
+        axios
+          .get(`http://192.168.1.85:8001/user/email/${res.user.email}`)
+
+          .then(res => {
+            status = 'user';
+            console.log(res.data);
+          })
+          .catch(err => {
+            console.log(err.response.detail);
+          })
+          .finally(() =>
+            axios
+              .get(`http://192.168.1.85:8001/entity/email/${res.user.email}`)
+              .then(res => {
+                status = 'entity';
+              })
+              .catch(err => {
+                console.log(err.response.detail);
+              })
+              .finally(() => {
+                console.log('status: ' + status);
+                EncryptedStorage.setItem('status',status).then(() => {
+                  if (status === 'user') {
+                    navigation.navigate('TabNavigator');
+                  } else if (status === 'entity') {
+                    navigation.navigate('TabNavigatorBB');
+                  }
+                });
+              }),
+          );
       }
     } catch (err) {
       setError(err.message);

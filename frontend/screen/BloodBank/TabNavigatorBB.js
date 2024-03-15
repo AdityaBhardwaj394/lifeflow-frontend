@@ -1,8 +1,9 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import DonorBB from './DonorBB'
-import RecieverBB from './RecieverBB'
-import HomeBB from './HomeBB'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React from 'react';
+import DonorBB from './DonorBB';
+import HomeBB from './HomeBB';
+import RecieverBB from './RecieverBB';
+const Tab = createBottomTabNavigator();
 
 const TabNavigatorBB = () => {
   return (
