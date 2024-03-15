@@ -1,6 +1,7 @@
 import { View, Text,FlatList,TouchableOpacity } from 'react-native'
 import { useState,useEffect } from 'react';
 import React from 'react'
+<<<<<<< HEAD
 import api from '../api'
 import { useSelector } from 'react-redux';
 import axios from "axios";
@@ -22,6 +23,16 @@ const RecieverBB = ({navigation}) => {
       try{
         const response = await api.get(`entity/email/${emailBB}`);
         // console.log(response.data);
+=======
+
+const RecieverBB = () => {
+  return (
+    <View>
+      <Text>RecieverBB</Text>
+    </View>
+  )
+}
+>>>>>>> 09bcc9ae9e3f8878845b0a87c36bb2bff8828cd3
 
         setRes(response.data);
 

@@ -12,7 +12,7 @@ const Home = ({navigation}) => {
   return (
     <View>
     <Header navigation ={navigation}/>
-      <Button title="Go to chat" onPress={()=>navigation.navigate('BBRegisterSearch')}/>
+      <Button title="Go to chat" onPress={()=>navigation.navigate('chat')}/>
       <Button title='logout' onPress={logout}/>
     </View>
  
