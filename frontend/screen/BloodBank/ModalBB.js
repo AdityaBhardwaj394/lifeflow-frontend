@@ -1,8 +1,7 @@
-import { View, Text,Modal,StyleSheet,TouchableOpacity, Pressable } from 'react-native'
+import { View, Text,Modal,StyleSheet,TouchableOpacity, ToastAndroid } from 'react-native'
 import React from 'react'
 import api from '../api';
-const ModalBB = ({navigation,route,item,visible,setVisible,canrecieve,res}) => {
-    console.log("visible",visible);
+const ModalBB = ({navigation,route,item,visible,setVisible,canrecieve,res,donoruser}) => {
 
     const Proceed=async()=>{
         try{
@@ -20,6 +19,10 @@ const ModalBB = ({navigation,route,item,visible,setVisible,canrecieve,res}) => {
         {
             console.log(err);
         }
+        finally{
+          ToastAndroid.show('Transaction has successfully completed', ToastAndroid.LONG);
+          setVisible(false);
+        }
     }
 
   return (
@@ -36,7 +39,10 @@ const ModalBB = ({navigation,route,item,visible,setVisible,canrecieve,res}) => {
           <Text style ={styles.modalText}>Blood group: {item.blood_group}</Text>
           <View>
           <Text>Available Donors:</Text>
-          
+          {donoruser && donoruser.map((donor, index) => (
+          <Text key={index}>{donor.name}  {donor.blood_group}</Text>
+          // Add more Text components to display other donor information if needed
+          ))}
           </View>
           <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}

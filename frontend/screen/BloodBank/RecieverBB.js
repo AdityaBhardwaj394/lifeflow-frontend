@@ -16,6 +16,7 @@ const RecieverBB = ({navigation,route}) => {
   const [visible,setVisible]=useState(false);
   const [selectedItem,setSelectedItem] =useState(null);
   const [canrecieve, setCanrecieve] = useState(true);
+  const [donoruser, setDonoruser] =useState([]);
   useEffect(()=>{
     setIsLoading(true);
     const getData= async()=>{
@@ -49,10 +50,12 @@ const RecieverBB = ({navigation,route}) => {
     try{
     const TransDetails = await api.get(`/initialiseTransaction/${item.id}?entity_id=1`);
     const CanDonate = JSON.parse(TransDetails.request._response).donorsThatCanDonate;
-    console.log("Transdetails" ,CanDonate);
+    const users = CanDonate.map(donor => donor.donor.user_info);
+    console.log("Transdetails" ,users);
     setCanrecieve(CanDonate);
     setVisible(true);
     setSelectedItem(item);
+    setDonoruser(users);
     }
     catch(err)
     {
@@ -91,6 +94,7 @@ const RecieverBB = ({navigation,route}) => {
             setVisible={setVisible}
             canrecieve={canrecieve}
             res={res}
+            donoruser={donoruser}
           />
         )}
         </View>
