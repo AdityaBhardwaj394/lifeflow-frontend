@@ -28,6 +28,7 @@ const RequestModal = ({navigation, route, hospital, visible, setVisible}) => {
   const [vol1,setVol1] = useState("");
   const [url, setUrl] = useState('');
   const [ver,setVer] = useState(false);
+  const [url2,seturl2] = useState('');
 
   useEffect(() => {
     if (route.name === 'Donate') {
@@ -92,7 +93,7 @@ const RequestModal = ({navigation, route, hospital, visible, setVisible}) => {
         console.log(url1);
         const num = parseInt(vol1)
         console.log(lon," : " ,lat)
-        const resp =await  axios.post(`http://192.168.163.190:8001/initial-request/${num}/?url=${url1}`,{
+        const resp =await  axios.post(`http://192.168.163.190:8001/initial-request/${num}/?url=${url2}`,{
           email: userEmail,
           lat: lat.toString(), 
           lon: lon.toString(), 
@@ -129,6 +130,12 @@ const RequestModal = ({navigation, route, hospital, visible, setVisible}) => {
                   placeholder="Volume Required (ml)"
                   value ={vol1}
                   onChangeText={(text) => setVol1(text)}
+                />
+                <TextInput
+                  // style={styles.textArea}
+                  placeholder="Prescription URL"
+                  value ={url2}
+                  onChangeText={(text) => seturl2(text)}
                 />
                 <Button title="Upload Proof" onPress={pickFile} />
                 {selectedFile ? (

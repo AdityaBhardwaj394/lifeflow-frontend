@@ -26,16 +26,14 @@ const BBRegister = ({ route, navigation }) => {
       // Create user with email and password
       await auth().createUserWithEmailAndPassword(email, password);
       
-      // Dispatch Redux actions
       
-      // Post data to the backend
-      axios.post(`http://192.168.163.190:8001/entity/create?tomtom_id=${hospital_id}`, {
+     await  axios.post(`http://192.168.163.190:8001/entity/create?tomtom_id=${hospital_id}`, {
         primary_email: email,
         primary_ph_no: phone_number,
         reg_number: reg_no,
         name: hospital_name,
       });
-      
+   
       // dispatch(setBBNameRedux(hospital_name));
       // dispatch(setBBPhoneno(phone_number));
       // dispatch(setBBemailRedux(email));

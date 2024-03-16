@@ -2,30 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { View, TextInput, Button, Text, FlatList, StyleSheet, ImageBackground } from 'react-native';
 import { useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
-import { socket } from './config';
+import { socket } from '../chat/config';
 
-const Chatuser = ({ route }) => {
-  const email = useSelector((state) => state.user.email);
+const ChatHospital = ({ route }) => {
+
+  const emailBB = useSelector(state=>state.user.email);
+
   const location = useSelector((state) => state.user.location);
   const [message, setMessage] = useState('');
   const [senderEmail, setSenderEmail] = useState('');
   const [messages, setMessages] = useState([]);
-  const hospitalemail=route.params.email;
-
+  const username=route.params.username;
+  const useremail=route.params.email;
+console.log(username);
+console.log(route.params);
   useEffect(() => {
     if (socket) {
-      socket.emit('register', email); // Replace with the actual user's email
+      socket.emit('register', emailBB); // Replace with the actual user's email
       socket.on('personal', (data) => {
         setMessages((prevMessages) => [...prevMessages, data]);
       });
     }
-
-
-    
   }, []);
 
   const sendMessage = () => {
-    
     if (socket) {
       const newMessage = {
         senderEmail,
@@ -35,7 +35,7 @@ const Chatuser = ({ route }) => {
 
       // Emit the message to the server
       socket.emit('sendToUser', {
-        recipientEmail: `${hospitalemail}`, // Replace with the actual recipient's email
+        recipientEmail:`${useremail}` , // Replace with the actual recipient's email
         message,
       });
 
@@ -45,9 +45,9 @@ const Chatuser = ({ route }) => {
   };
 
   return (
-    <ImageBackground source={require('./final.png')} style={styles.backgroundImage}>
+    <ImageBackground source={require('../chat/final.png')} style={styles.backgroundImage}>
       <View style={styles.chatContainer}>
-        {/* <Text style={styles.hospitalHeading}>{hospitalName}</Text> */}
+        <Text style={styles.hospitalHeading}>{username}</Text>
         <FlatList
           data={messages}
           renderItem={({ item }) => (
@@ -139,4 +139,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Chatuser;
+export default ChatHospital;

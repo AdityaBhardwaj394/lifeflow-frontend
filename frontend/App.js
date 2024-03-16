@@ -16,6 +16,7 @@ import Splash from './screen/Splash';
 import TabNavigator from './screen/TabNavigator';
 import Chatuser from './screen/chat/Chatuser';
 import store from './store/store';
+import ChatHospital from './screen/BloodBank/chatHospital';
 const Stack=createStackNavigator();
 
 const App = () => {
@@ -26,13 +27,14 @@ const App = () => {
     initialRouteName="Splash"
     screenOptions={{ headerShown: false }}>
       <Stack.Screen name="chat" component={Chatuser}/>
+      <Stack.Screen name="chathospital" component={ChatHospital}/>
       <Stack.Screen name="Splash" component={Splash}/>
       <Stack.Screen name="DashBoard" component={DashBoard}/>
       <Stack.Screen name="BBRegister" component={BBRegister}/>
       <Stack.Screen name="UserRegister" component={UserRegister}/>
       <Stack.Screen name="login" component={Login}/>
       <Stack.Screen name="register" component={Register}/>
-      {/* <Stack.Screen name="TabNavigatorBB" component={TabNavigatorBB}/> */}
+      <Stack.Screen name="TabNavigatorBB" component={TabNavigatorBB}/>
       <Stack.Screen name="TabNavigator" component={TabNavigator}/>
       <Stack.Screen name="Home" component={Home}/>
       <Stack.Screen name="Profile" component={Profile}/>

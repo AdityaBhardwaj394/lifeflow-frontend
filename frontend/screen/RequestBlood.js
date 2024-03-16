@@ -32,10 +32,7 @@ const RequestBlood = ({navigation, route}) => {
     const fetchData = async () => {
       try {
         let url = `http://192.168.163.190:8001/locations?lat=${lat}&lon=${lon}&radius=${radius}`;
-        if (searchText.trim() !== '') {
-          url += `&q=${searchText}`;
-        }
-        console.log(url);
+        
         const result = await axios.get(url);
         // console.log(result.data);
         setRes(result.data);
@@ -44,7 +41,8 @@ const RequestBlood = ({navigation, route}) => {
       }
     };
     fetchData();
-  }, [radius, lat, lon]);
+  }, [radius]);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -63,6 +61,24 @@ const RequestBlood = ({navigation, route}) => {
     };
     fetchData();
   }, [searchText]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let url = `http://192.168.163.190:8001/search?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000`;
+       
+        const result = await axios.get(url);
+        // console.log(result.data);
+        setRes(result.data);
+        const res = await api.get(`/user/email/${email}`);
+        //console.log(res.data);
+        setVerified(res.data.verified);
+        setUid(res.data.id.toString());
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
   
 
   const handleRequest = async item => {
