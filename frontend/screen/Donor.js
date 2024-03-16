@@ -38,6 +38,7 @@ const Donor = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
+        <Text style={styles.heading}>Available Hospitals</Text>
       {isLoading ? (
         <Text style={styles.loadingText}>Loading Hospitals...</Text>
       ) : (
@@ -51,7 +52,9 @@ const Donor = ({ route, navigation }) => {
               <View style={{
                   paddingLeft: '15%',
                 }}>
-                <Icon name="chat" size={30} color="tomato" onPress={()=>navigation.navigate('chat')}/>
+                <Icon name="chat" size={30} color="blue" onPress={()=>navigation.navigate('chat',{
+                  selectedHospital: item.poi
+                })}/>
                 <Text
                 >Chat</Text>
                 </View>
@@ -59,7 +62,7 @@ const Donor = ({ route, navigation }) => {
                   paddingLeft: '35%',
 
                 }}>
-                <Button title="Donate" onPress={() => handleDonate(item)} color="tomato" />
+                <Button title="Donate" onPress={() => handleDonate(item)} color="red" />
                 <Text></Text>
                 </View>
               </View>
@@ -100,6 +103,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 10,
   },
   hospitalName: {
     fontSize: 20,

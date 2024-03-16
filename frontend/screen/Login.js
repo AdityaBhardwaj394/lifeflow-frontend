@@ -10,6 +10,7 @@ import Button from '../components/Button';
 import Background from '../components/Background';
 import { setUserEmailRedux, setUserUIDRedux } from '../store/userSlice';
 import { theme } from '../theme/theme';
+import { setBBNameRedux,setBBPhoneno,setBBemailRedux } from '../store/hospitalSlice';
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ export default function Login({ navigation }) {
 
         dispatch(setUserEmailRedux(res.user.email));
         dispatch(setUserUIDRedux(res.user.uid));
+
         console.log('user logged in');
         navigation.navigate('Home');
       }

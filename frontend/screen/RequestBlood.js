@@ -16,11 +16,13 @@ const RequestBlood = ({ navigation, route }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        
-        const result = await axios.get(
-          `http://192.168.1.85:8001/locations?lat=${lat}&lon=${lon}&radius=${radius}`
-          // `http://192.168.1.85:8001/search?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000&q=${searchText}`
-        );
+        let url = `http://192.168.1.85:8001/locations?lat=${lat}&lon=${lon}&radius=${radius}`;
+        if (searchText.trim() !== '') {
+          url += `&q=${searchText}`;
+        }
+        console.log(url);
+        const result = await axios.get(url);
+        // console.log(result.data);
         setRes(result.data);
       } catch (err) {
         console.log(err);
@@ -28,6 +30,21 @@ const RequestBlood = ({ navigation, route }) => {
     };
     fetchData();
   }, [radius, lat, lon, searchText]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let url = `http://192.168.1.85:8001/search?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000&q=${searchText}`;
+       
+        const result = await axios.get(url);
+        // console.log(result.data);
+        setRes(result.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [searchText]);
+  
 
   const handleRequest = async (item) => {
     try {

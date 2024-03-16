@@ -9,7 +9,7 @@ const initialState = {
     //     longitude: 0
     
     // }
-    name:"default",
+    name:"Default",
     BloodGroup:"default",
 
 };

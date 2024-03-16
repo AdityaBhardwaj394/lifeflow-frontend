@@ -86,11 +86,17 @@ const Profile = () => {
         "name": "string",
         "dob": "2024-03-15",
         "email": "string",
-        "phone_number": "string",
+        "phone_number": "anlogvnsdpn",
         "blood_group": "string",
         "sex": "string",
         "profile_url": "string",
         "location": "string"
+      }
+      ,{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      
       });
   
       // Optionally, dispatch an action to update Redux state
@@ -188,7 +194,12 @@ const Profile = () => {
       <Button title="Update Data" onPress={updateData} disabled={isLoading} />
       {isLoading && <Text>Loading...</Text>}
       {error && <Text style={styles.errorText}>{error}</Text>}
+      <View
+      style={{
+        margin:'2%'
+      }}>
       <Button title='logout' onPress={logout}/>
+      </View>
     </View>
   );
 }

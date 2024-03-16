@@ -8,6 +8,7 @@ import Button from '../../components/Button';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import TextInput from '../../components/TextInput';
 import auth from '@react-native-firebase/auth'
+
 const BBRegister = ({ route, navigation }) => {
   const { hospital_name,hospital_id} = route.params;
 
@@ -20,6 +21,7 @@ const BBRegister = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
+  console.log("hospital id is",hospital_id);
   const register = async () => {
     try {
       // Create user with email and password
