@@ -128,7 +128,7 @@ const RequestBlood = ({navigation, route}) => {
         //3) modal asking to register
         setHReg(true);
         setRegisterModalVisible(true);
-        console.log('Hospital is not available000');
+        console.log('Hospital is not available');
       }
     } catch (err) {
       console.log(err);
@@ -168,25 +168,30 @@ const RequestBlood = ({navigation, route}) => {
       />
       <Toast />
       <FlatList
-        data={res}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({item}) => (
-          <Pressable
-            onPress={() => handleNavigation(item)}
-            style={({pressed}) => [
-              {
-                backgroundColor: pressed ? 'lightgray' : 'white',
-              },
-              {borderRadius: 10, borderColor: 'black', borderWidth: 1},
-            ]}>
-            <View>
-              <Text style={styles.hospitalName}>{item.poi.name}</Text>
-              <Text style={styles.donorText}>Available Donors: —</Text>
-              <Button title="Request" onPress={() => handleRequest(item)} style={styles.requestButton} />
-            </View>
-          </Pressable>
-        )}
-      />
+  data={res}
+  keyExtractor={item => item.id.toString()}
+  renderItem={({item}) => (
+    <Pressable
+      onPress={() => handleNavigation(item)}
+      style={({pressed}) => [
+        {
+          backgroundColor: pressed ? 'lightgray' : 'white',
+        },
+        {borderRadius: 10, borderColor: 'black', borderWidth: 1,},
+      ]}>
+      <View>
+        <Text style={styles.hospitalName}>{item.poi.name}</Text>
+        <Text style={styles.donorText}>Available Donors: —</Text>
+        <Button
+          title="Request"
+          onPress={() => handleRequest(item)}
+          style={styles.requestButton}
+        />
+      </View>
+    </Pressable>
+  )}
+  ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+/>
 
       {!verified && (
         <RequestModal

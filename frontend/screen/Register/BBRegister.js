@@ -1,12 +1,9 @@
-import auth from '@react-native-firebase/auth';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Background from '../../components/Background';
 import Button from '../../components/Button';
-import EncryptedStorage from 'react-native-encrypted-storage';
 import TextInput from '../../components/TextInput';
-import { setBBNameRedux, setBBPhoneno, setBBemailRedux, setBBreg_no } from '../../store/hospitalSlice';
 
 const BBRegister = ({ route, navigation }) => {
   const { hospital_name,hospital_id} = route.params;

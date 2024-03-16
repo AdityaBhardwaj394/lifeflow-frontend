@@ -26,6 +26,14 @@ export default function DashBoard({navigation}) {
       >
         Sign Up
       </Button>
+
+      <Button
+        mode="outlined"
+        onPress={() => navigation.navigate('all')}
+      >
+        View Transactions
+      </Button>
+
     </Background>
   )
 }

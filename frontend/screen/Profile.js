@@ -1,11 +1,11 @@
-import { View, Text,StyleSheet,TextInput,Button,Image,ActivityIndicator } from 'react-native'
-import { useState,useEffect } from 'react'
+import auth from "@react-native-firebase/auth";
+import React, { useEffect, useState } from 'react';
+import { Button, Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { launchImageLibrary } from 'react-native-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
-import React from 'react'
-import api from './api.js';
-import {launchImageLibrary} from 'react-native-image-picker';
 import { setBloodGroupRedux, setNameRedux } from '../store/profileSlice.js';
-import auth from '@react-native-firebase/auth';
+import api from './api.js';
+
 const Profile = ({navigation}) => {
   const logout =async()=>{
     await auth().signOut().then(()=>{
