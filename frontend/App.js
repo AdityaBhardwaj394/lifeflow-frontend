@@ -1,26 +1,21 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from './screen/Home'
-import DashBoard from './screen/DashBoard'
-import Login from './screen/Login'
-import Register from './screen/Register'
-import Splash from './screen/Splash'
-import Profile from './screen/Profile';
-import Donor from './screen/Donor';
-import RequestBlood from './screen/RequestBlood';
 import { NavigationContainer } from '@react-navigation/native';
-import { useNavigation } from '@react-navigation/native';
-import TabNavigator from './screen/TabNavigator';
-import BBRegisterSearch from './screen/Register/BBRegisterSearch';
-import UserRegister from './screen/Register/UserRegister'
-import BBRegister from './screen/Register/BBRegister'
-import Chatuser from './screen/chat/Chatuser'
-import EntityDetails from './screen/EntityDetails';
-import { Provider } from 'react-redux'
-import store from './store/store'
+import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
+import { Provider } from 'react-redux';
 import TabNavigatorBB from './screen/BloodBank/TabNavigatorBB';
+import DashBoard from './screen/DashBoard';
+import EntityDetails from './screen/EntityDetails';
+import Home from './screen/Home';
+import Login from './screen/Login';
+import Profile from './screen/Profile';
+import Register from './screen/Register';
+import BBRegister from './screen/Register/BBRegister';
+import BBRegisterSearch from './screen/Register/BBRegisterSearch';
+import UserRegister from './screen/Register/UserRegister';
+import Splash from './screen/Splash';
+import TabNavigator from './screen/TabNavigator';
+import Chatuser from './screen/chat/Chatuser';
+import store from './store/store';
 const Stack=createStackNavigator();
 
 const App = () => {
@@ -44,6 +39,7 @@ const App = () => {
       
       <Stack.Screen name="BBRegisterSearch" component={BBRegisterSearch}/>
       <Stack.Screen name="EntityDetails" component={EntityDetails}/>
+    
     </Stack.Navigator>
     </NavigationContainer>
     </Provider>

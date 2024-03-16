@@ -1,14 +1,12 @@
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
-import { Text } from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import axios from 'axios'; // Import axios for making HTTP requests
-import TextInput from '../components/TextInput';
-import { useDispatch } from 'react-redux';
-import { theme } from '../theme/theme';
-import Button from '../components/Button';
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Text } from 'react-native-paper';
 import Background from '../components/Background';
-import { setUserEmailRedux, setUserUIDRedux } from '../store/userSlice';
+import Button from '../components/Button';
+import TextInput from '../components/TextInput';
+import { theme } from '../theme/theme';
 
 const Register = ({ navigation }) => {
   const [password, setPassword] = useState('');

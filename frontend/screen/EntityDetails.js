@@ -1,7 +1,7 @@
-import { View, Text } from 'react-native'
-import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 const EntityDetails = ({navigatoin,route}) => {
     console.log(route.params);

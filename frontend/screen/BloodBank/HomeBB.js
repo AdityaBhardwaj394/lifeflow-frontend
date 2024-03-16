@@ -1,7 +1,13 @@
-import { View, Text } from 'react-native'
+import auth from '@react-native-firebase/auth'
 import React from 'react'
-
-const HomeBB = () => {
+import { Button } from 'react-native'
+const HomeBB = ({navigation}) => {
+  const logout =async()=>{
+    await auth().signOut().then(()=>{
+      console.log('user logged out successfully')
+      navigation.navigate('DashBoard')
+    })
+  }
   return (
     <View>
       <Text>HomeBB</Text>

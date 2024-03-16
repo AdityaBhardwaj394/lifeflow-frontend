@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { Text } from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
-import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import TextInput from '../components/TextInput';
-import Button from '../components/Button';
+import { Text } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
 import Background from '../components/Background';
+import Button from '../components/Button';
+import TextInput from '../components/TextInput';
 import { setUserEmailRedux, setUserUIDRedux } from '../store/userSlice';
 import { theme } from '../theme/theme';
 import { setBBNameRedux,setBBPhoneno,setBBemailRedux } from '../store/hospitalSlice';
@@ -38,9 +38,38 @@ export default function Login({ navigation }) {
 
         dispatch(setUserEmailRedux(res.user.email));
         dispatch(setUserUIDRedux(res.user.uid));
+        //console.log('user logged in');
+        let status = 'none';
+        axios
+          .get(`http://192.168.1.85:8001/user/email/${res.user.email}`)
 
-        console.log('user logged in');
-        navigation.navigate('Home');
+          .then(res => {
+            status = 'user';
+            console.log(res.data);
+          })
+          .catch(err => {
+            console.log(err.response.detail);
+          })
+          .finally(() =>
+            axios
+              .get(`http://192.168.1.85:8001/entity/email/${res.user.email}`)
+              .then(res => {
+                status = 'entity';
+              })
+              .catch(err => {
+                console.log(err.response.detail);
+              })
+              .finally(() => {
+                console.log('status: ' + status);
+                EncryptedStorage.setItem('status',status).then(() => {
+                  if (status === 'user') {
+                    navigation.navigate('TabNavigator');
+                  } else if (status === 'entity') {
+                    navigation.navigate('TabNavigatorBB');
+                  }
+                });
+              }),
+          );
       }
     } catch (err) {
       setError(err.message);
