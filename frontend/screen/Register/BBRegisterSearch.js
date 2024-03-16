@@ -11,17 +11,21 @@ const BBRegisterSearch = ({ navigation }) => {
   
   const handleChange = text => {
     onChangeText(text);
-    console.log(lat,lon)
-    
-    axios
-      .get(
-        `http://192.168.1.47:8001/search?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000&q=${text}`,
-        // http://${IP}:8001/search?lat=17.5054036&lon=78.4937645&radius=2000&q=ho
-      )
-      .then(result => {
-        console.log(result.data);
-        setRes(result.data);
-      });
+    console.log(lat, lon);
+    console.log(text);
+    try {
+      axios
+        .get(`http://192.168.1.85:8001/search?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000&q=${text}`)
+        .then(result => {
+          // console.log(result.data);
+          setRes(result.data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

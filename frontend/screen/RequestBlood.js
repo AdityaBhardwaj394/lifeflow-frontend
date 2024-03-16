@@ -1,22 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Button, StyleSheet, TextInput, Pressable } from 'react-native';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import {
+  Button,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
+import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
+import RegisterModal from './RegisterModal';
+import api from './api';
 import RequestModal from './model/Request_modal';
 
-const RequestBlood = ({ navigation, route }) => {
+const RequestBlood = ({navigation, route}) => {
   const [res, setRes] = useState([]);
   const [selectedHospital, setSelectedHospital] = useState(null);
   const [visible, setVisible] = useState(false);
   const [radius, setRadius] = useState(10000); // Default radius
-  const lat = useSelector((state) => state.user.location.latitude);
-  const lon = useSelector((state) => state.user.location.longitude);
-
+  const [verified, setVerified] = useState(false);
+  const lat = useSelector(state => state.user.location.latitude);
+  const lon = useSelector(state => state.user.location.longitude);
+  const email = useSelector(state => state.user.email);
+  const [uid, setUid] = useState('');
+  const [hReg, setHReg] = useState(false);
+  const [registerModalVisible, setRegisterModalVisible] = useState(false); 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(`http://192.168.1.137:8001/locations?lat=${lat}&lon=${lon}&radius=${radius}`);
+        const result = await axios.get(
+          `http://192.168.1.85:8001/locations?lat=${lat}&lon=${lon}&radius=${radius}`,
+        );
         setRes(result.data);
+        const res = await api.get(`/user/email/${email}`);
+        //console.log(res.data);
+        setVerified(res.data.verified);
+        setUid(res.data.id.toString());
       } catch (err) {
         console.log(err);
       }
@@ -24,25 +45,67 @@ const RequestBlood = ({ navigation, route }) => {
     fetchData();
   }, [radius, lat, lon]);
 
-  const handleRequest = async (item) => {
+  const handleRequest = async item => {
     try {
-      const result = await axios.get(`http://192.168.1.137:8001/entity/tomtom/${item.id}`);
+      const result = await axios.get(
+        `http://192.168.1.85:8001/entity/tomtom/${item.id}`,
+      );
       if (result.data.status === 'true') {
-        setVisible(true);
-        setSelectedHospital(item);
+        console.log('eid: ', result.data.data.id);
+        if (!verified) {
+          setVisible(true);
+          setSelectedHospital(item);
+        } else {
+          //show toast
+          const stat1 = await axios.get(
+            `http://192.168.1.85:8001/isReceiver/${
+              result.data.data.id
+            }?user_id=${parseInt(uid)}`,
+          );
+          if (stat1.data === true) {
+            Toast.show({
+              type: 'error',
+              text1: 'You already requested this hospital',
+            });
+          } else {
+            axios
+              .post(
+                `http://192.168.1.85:8001/request/${result.data.data.id}`,
+                {
+                  email: email,
+                },
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                },
+              )
+              .then(d => {
+                Toast.show({
+                  type: 'success',
+                  text1: 'Your request was successfully sent',
+                });
+              });
+          }
+        }
       } else {
-        console.log('Hospital is not available');
+        //3) modal asking to register
+        setHReg(true);
+        setRegisterModalVisible(true);
+        console.log('Hospital is not available000');
       }
     } catch (err) {
       console.log(err);
     }
   };
-  const handleNavigation = async (item) => {
+  const handleNavigation = async item => {
     // console.log(item);
     try {
-      const result = await axios.get(`http://192.168.1.137:8001/entity/tomtom/JOriSdh_3qBxjcz99xZSyw`);
+      const result = await axios.get(
+        `http://192.168.1.85:8001/entity/tomtom/${item.id}`,
+      );
       if (result.data.status === 'true') {
-        navigation.navigate('EntityDetails', { id: result.data.data.id})
+        navigation.navigate('EntityDetails', {id: result.data.data.id});
       } else {
         // console.log()
         console.log('Hospital is not available');
@@ -57,24 +120,24 @@ const RequestBlood = ({ navigation, route }) => {
       <TextInput
         style={styles.input}
         value={radius.toString()}
-        onChangeText={(text) => setRadius(parseInt(text) || 0)}
+        onChangeText={text => setRadius(parseInt(text) || 0)}
         keyboardType="numeric"
       />
+      <Toast />
       <FlatList
         data={res}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
+        keyExtractor={item => item.id.toString()}
+        renderItem={({item}) => (
           <Pressable
-            onPress={()=>handleNavigation(item)}
-            style={({ pressed }) => [
+            onPress={() => handleNavigation(item)}
+            style={({pressed}) => [
               {
                 backgroundColor: pressed ? 'lightgray' : 'white',
               },
-              { borderRadius: 10, borderColor: 'black', borderWidth: 1 },
-            ]}
-          >
+              {borderRadius: 10, borderColor: 'black', borderWidth: 1},
+            ]}>
             <View>
-              <Text style={{ padding: 10, fontSize: 18 }}>{item.poi.name}</Text>
+              <Text style={{padding: 10, fontSize: 18}}>{item.poi.name}</Text>
               <Text>available donors: {}</Text>
               <Text>{item.id}</Text>
               <Button title="Request" onPress={() => handleRequest(item)} />
@@ -83,13 +146,23 @@ const RequestBlood = ({ navigation, route }) => {
         )}
       />
 
-      {selectedHospital && (
+      {!verified && (
         <RequestModal
           navigation={navigation}
           route={route}
           hospital={selectedHospital}
           visible={visible}
           setVisible={setVisible}
+        />
+      )}
+
+      {hReg && (
+        <RegisterModal
+          navigation={navigation}
+          route={route}
+          hospital={selectedHospital}
+          visible={registerModalVisible}
+          setVisible={setRegisterModalVisible}
         />
       )}
     </View>

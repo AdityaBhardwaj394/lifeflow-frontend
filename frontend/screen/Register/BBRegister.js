@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { setBBNameRedux, setBBPhoneno, setBBemailRedux, setBBreg_no } from '../../store/hospitalSlice';
+import auth from '@react-native-firebase/auth';
 import axios from 'axios';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Background from '../../components/Background';
 import Button from '../../components/Button';
 import TextInput from '../../components/TextInput';
-import auth from '@react-native-firebase/auth'
+import { setBBNameRedux, setBBPhoneno, setBBemailRedux, setBBreg_no } from '../../store/hospitalSlice';
 
 const BBRegister = ({ route, navigation }) => {
   const { hospital_name,hospital_id} = route.params;
@@ -32,7 +31,7 @@ const BBRegister = ({ route, navigation }) => {
       dispatch(setBBreg_no(reg_no));
       
       // Post data to the backend
-      axios.post(`http://192.168.1.47:8001/entity/create?tomtom_id=${hospital_id}`, {
+      axios.post(`http://192.168.1.85:8001/entity/create?tomtom_id=${hospital_id}`, {
         primary_email: email,
         primary_ph_no: phone_number,
         reg_number: reg_no,

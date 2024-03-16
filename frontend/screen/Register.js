@@ -1,14 +1,12 @@
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
-import { Text } from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import axios from 'axios'; // Import axios for making HTTP requests
-import TextInput from '../components/TextInput';
-import { useDispatch } from 'react-redux';
-import { theme } from '../theme/theme';
-import Button from '../components/Button';
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Text } from 'react-native-paper';
 import Background from '../components/Background';
-import { setUserEmailRedux, setUserUIDRedux } from '../store/userSlice';
+import Button from '../components/Button';
+import TextInput from '../components/TextInput';
+import { theme } from '../theme/theme';
 
 const Register = ({ navigation }) => {
   const [password, setPassword] = useState('');
@@ -20,8 +18,8 @@ const Register = ({ navigation }) => {
     setLoading(true);
     try {
       await auth().createUserWithEmailAndPassword(email, password);
-      await axios.post('http://192.168.1.47:8001/user/create', { email: email });
-      navigation.navigate('l');
+      await axios.post('http://192.168.1.85:8001/user/create', { email: email });
+      navigation.navigate('login');
     } catch (err) {
       if (err.code === 'auth/email-already-in-use') {
         setError('That email address is already in use!');
