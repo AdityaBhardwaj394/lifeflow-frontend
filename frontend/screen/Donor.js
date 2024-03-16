@@ -1,10 +1,12 @@
-import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
+import { View, Text, FlatList, ToastAndroid, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import api from './api';
 import { useSelector } from 'react-redux';
-import RequestModal from './model/Request_modal';
-import Icon from 'react-native-vector-icons/Entypo';
 
+import RegisterModal from './RegisterModal';
+import Icon from 'react-native-vector-icons/Entypo';
+import axios from 'axios';
+import RequestModal from './model/Request_modal';
 const Donor = ({ route, navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -12,8 +14,11 @@ const Donor = ({ route, navigation }) => {
   const [visible, setVisible] = useState(false);
   const userLocation = useSelector(state => state.user.location);
   const latitude = userLocation.latitude;
+
   const longitude = userLocation.longitude;
-  const radius = 2000;
+  const radius = 10000;
+  const [registerModalVisible, setRegisterModalVisible] = useState(false); 
+  const [hReg, setHReg] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -32,13 +37,54 @@ const Donor = ({ route, navigation }) => {
   }, []);
 
   const handleDonate = (item) => {
-    setSelectedHospital(item);
-    setVisible(true);
+    try {
+      const res = axios.get(`http://192.168.163.190:8001/entity/tomtom/${item.id}`).then((res) => {
+        console.log(res.data);
+        if (res.data.status == 'true') {
+          setSelectedHospital(item);
+          setVisible(true);
+        } else {
+          setHReg(true);
+          setRegisterModalVisible(true);
+          console.log('Hospital is not available000');
+
+        }
+
+      })
+
+    } catch (err) {
+      console.log(err);
+    }
+    
   };
+
+  const handlenavigate = (item) => {
+
+    try {
+      const res = axios.get(`http://192.168.163.190:8001/entity/tomtom/${item.id}`).then((res) => {
+        console.log(res.data);
+        if (res.data.status == 'true') {
+          navigation.navigate('chat', {
+            selectedHospital: item.poi,
+            email: res.data.primary_email
+          });
+        } else {
+          setHReg(true);
+          setRegisterModalVisible(true);
+          console.log('Hospital is not available000');
+
+        }
+
+      })
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <View style={styles.container}>
-        <Text style={styles.heading}>Available Hospitals</Text>
+      <Text style={styles.heading}>Available Hospitals</Text>
       {isLoading ? (
         <Text style={styles.loadingText}>Loading Hospitals...</Text>
       ) : (
@@ -49,38 +95,46 @@ const Donor = ({ route, navigation }) => {
               <Text style={styles.hospitalName}>{item.poi.name}</Text>
               <Text style={styles.donorText}>Available Receiver Match: —</Text>
               <View style={styles.buttonContainer}>
-              <View style={{
+                <TouchableOpacity style={{
                   paddingLeft: '15%',
                 }}>
-                <Icon name="chat" size={30} color="blue" onPress={()=>navigation.navigate('chat',{
-                  selectedHospital: item.poi
-                })}/>
-                <Text
-                >Chat</Text>
-                </View>
+                  <Icon name="chat" size={30} color="blue" onPress={() => handlenavigate(item)} />
+                  <Text
+                  >Chat</Text>
+                </TouchableOpacity>
                 <View style={{
                   paddingLeft: '35%',
 
                 }}>
-                <Button title="Donate" onPress={() => handleDonate(item)} color="red" />
-                <Text></Text>
+                  <Button title="Donate" onPress={() => handleDonate(item)} color="red" />
+                  <Text></Text>
                 </View>
               </View>
+             
+            
             </View>
           )}
           keyExtractor={item => item.id}
         />
       )}
 
-      {selectedHospital && (
+      {hReg && (
+        <RegisterModal
+          navigation={navigation}
+          route={route}
+          hospital={selectedHospital}
+          visible={registerModalVisible}
+          setVisible={setRegisterModalVisible}
+        />
+      )}
+       {selectedHospital && (
         <RequestModal
           navigation={navigation}
           route={route}
           hospital={selectedHospital}
           visible={visible}
           setVisible={setVisible}
-        />
-      )}
+        />)}
     </View>
   );
 };
@@ -113,7 +167,7 @@ const styles = StyleSheet.create({
   hospitalName: {
     fontSize: 20,
     fontWeight: 'bold',
-    color:'black'
+    color: 'black'
   },
   donorText: {
     fontSize: 16,

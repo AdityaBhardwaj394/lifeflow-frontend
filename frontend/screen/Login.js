@@ -10,7 +10,6 @@ import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { setUserEmailRedux, setUserUIDRedux } from '../store/userSlice';
 import { theme } from '../theme/theme';
-import { setBBNameRedux,setBBPhoneno,setBBemailRedux } from '../store/hospitalSlice';
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch();

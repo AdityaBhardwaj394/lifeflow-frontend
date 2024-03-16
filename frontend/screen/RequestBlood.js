@@ -32,10 +32,7 @@ const RequestBlood = ({navigation, route}) => {
     const fetchData = async () => {
       try {
         let url = `http://192.168.163.190:8001/locations?lat=${lat}&lon=${lon}&radius=${radius}`;
-        if (searchText.trim() !== '') {
-          url += `&q=${searchText}`;
-        }
-        console.log(url);
+        
         const result = await axios.get(url);
         // console.log(result.data);
         setRes(result.data);
@@ -44,7 +41,8 @@ const RequestBlood = ({navigation, route}) => {
       }
     };
     fetchData();
-  }, [radius, lat, lon]);
+  }, [radius]);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -63,6 +61,24 @@ const RequestBlood = ({navigation, route}) => {
     };
     fetchData();
   }, [searchText]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let url = `http://192.168.163.190:8001/search?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000`;
+       
+        const result = await axios.get(url);
+        // console.log(result.data);
+        setRes(result.data);
+        const res = await api.get(`/user/email/${email}`);
+        //console.log(res.data);
+        setVerified(res.data.verified);
+        setUid(res.data.id.toString());
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
   
 
   const handleRequest = async item => {
@@ -112,7 +128,7 @@ const RequestBlood = ({navigation, route}) => {
         //3) modal asking to register
         setHReg(true);
         setRegisterModalVisible(true);
-        console.log('Hospital is not available000');
+        console.log('Hospital is not available');
       }
     } catch (err) {
       console.log(err);
@@ -152,25 +168,30 @@ const RequestBlood = ({navigation, route}) => {
       />
       <Toast />
       <FlatList
-        data={res}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({item}) => (
-          <Pressable
-            onPress={() => handleNavigation(item)}
-            style={({pressed}) => [
-              {
-                backgroundColor: pressed ? 'lightgray' : 'white',
-              },
-              {borderRadius: 10, borderColor: 'black', borderWidth: 1},
-            ]}>
-            <View>
-              <Text style={styles.hospitalName}>{item.poi.name}</Text>
-              <Text style={styles.donorText}>Available Donors: —</Text>
-              <Button title="Request" onPress={() => handleRequest(item)} style={styles.requestButton} />
-            </View>
-          </Pressable>
-        )}
-      />
+  data={res}
+  keyExtractor={item => item.id.toString()}
+  renderItem={({item}) => (
+    <Pressable
+      onPress={() => handleNavigation(item)}
+      style={({pressed}) => [
+        {
+          backgroundColor: pressed ? 'lightgray' : 'white',
+        },
+        {borderRadius: 10, borderColor: 'black', borderWidth: 1,},
+      ]}>
+      <View>
+        <Text style={styles.hospitalName}>{item.poi.name}</Text>
+        <Text style={styles.donorText}>Available Donors: —</Text>
+        <Button
+          title="Request"
+          onPress={() => handleRequest(item)}
+          style={styles.requestButton}
+        />
+      </View>
+    </Pressable>
+  )}
+  ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+/>
 
       {!verified && (
         <RequestModal

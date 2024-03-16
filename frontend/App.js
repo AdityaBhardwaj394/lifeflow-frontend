@@ -2,6 +2,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { Provider } from 'react-redux';
+import All from './blockchain/All';
+import AllEntity from './blockchain/AllEntity';
+import AllUser from './blockchain/AllUser';
 import TabNavigatorBB from './screen/BloodBank/TabNavigatorBB';
 import DashBoard from './screen/DashBoard';
 import EntityDetails from './screen/EntityDetails';
@@ -16,6 +19,8 @@ import Splash from './screen/Splash';
 import TabNavigator from './screen/TabNavigator';
 import Chatuser from './screen/chat/Chatuser';
 import store from './store/store';
+import ChatHospital from './screen/BloodBank/chatHospital';
+
 const Stack=createStackNavigator();
 
 const App = () => {
@@ -26,6 +31,7 @@ const App = () => {
     initialRouteName="Splash"
     screenOptions={{ headerShown: false }}>
       <Stack.Screen name="chat" component={Chatuser}/>
+      <Stack.Screen name="chathospital" component={ChatHospital}/>
       <Stack.Screen name="Splash" component={Splash}/>
       <Stack.Screen name="DashBoard" component={DashBoard}/>
       <Stack.Screen name="BBRegister" component={BBRegister}/>
@@ -36,10 +42,11 @@ const App = () => {
       <Stack.Screen name="TabNavigator" component={TabNavigator}/>
       <Stack.Screen name="Home" component={Home}/>
       <Stack.Screen name="Profile" component={Profile}/>
-      
       <Stack.Screen name="BBRegisterSearch" component={BBRegisterSearch}/>
       <Stack.Screen name="EntityDetails" component={EntityDetails}/>
-    
+      <Stack.Screen name="all" component={All} />
+      <Stack.Screen name="allUser" component={AllUser}/>
+      <Stack.Screen name="allEntity" component={AllEntity}/>
     </Stack.Navigator>
     </NavigationContainer>
     </Provider>
