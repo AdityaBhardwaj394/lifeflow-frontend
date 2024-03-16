@@ -91,7 +91,7 @@ const RequestModal = ({navigation, route, hospital, visible, setVisible}) => {
         setUrl(url1);
         const num = parseInt(vol1)
         console.log(lon," : " ,lat)
-        const resp =await  axios.post(`http://192.168.1.85:8001/initial-request/${num}/?url=${url}`,{
+        const resp =await  axios.post(`http://192.168.163.190:8001/initial-request/${num}/?url=${url}`,{
           email: userEmail,
           lat: lat.toString(), 
           lon: lon.toString(), 

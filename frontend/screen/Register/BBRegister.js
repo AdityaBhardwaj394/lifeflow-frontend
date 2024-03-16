@@ -31,7 +31,7 @@ const BBRegister = ({ route, navigation }) => {
       dispatch(setBBreg_no(reg_no));
       
       // Post data to the backend
-      axios.post(`http://192.168.1.85:8001/entity/create?tomtom_id=${hospital_id}`, {
+      axios.post(`http://192.168.163.190:8001/entity/create?tomtom_id=${hospital_id}`, {
         primary_email: email,
         primary_ph_no: phone_number,
         reg_number: reg_no,

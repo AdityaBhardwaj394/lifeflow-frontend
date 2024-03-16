@@ -28,7 +28,7 @@ export default function Login({ navigation }) {
         //console.log('user logged in');
         let status = 'none';
         axios
-          .get(`http://192.168.1.85:8001/user/email/${res.user.email}`)
+          .get(`http://192.168.163.190:8001/user/email/${res.user.email}`)
 
           .then(res => {
             status = 'user';
@@ -39,7 +39,7 @@ export default function Login({ navigation }) {
           })
           .finally(() =>
             axios
-              .get(`http://192.168.1.85:8001/entity/email/${res.user.email}`)
+              .get(`http://192.168.163.190:8001/entity/email/${res.user.email}`)
               .then(res => {
                 status = 'entity';
               })

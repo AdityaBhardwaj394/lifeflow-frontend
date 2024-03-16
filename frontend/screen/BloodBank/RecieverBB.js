@@ -6,16 +6,16 @@ import { useSelector } from 'react-redux';
 import axios from "axios";
 import ModalBB from './ModalBB';
 
-const RecieverBB = ({navigation}) => {
+const RecieverBB = ({navigation,route}) => {
   const [id,setId] = useState(null);
   const [isLoading,setIsLoading]= useState(null);
   const [res,setRes]=useState([]);
   const emailBB = useSelector(state=>state.user.email);
   const [err,setErr] = useState(null);
   const [list,setList] =useState([]);
-  const [isVisible,setIsVisible]=useState(false);
+  const [visible,setVisible]=useState(false);
   const [selectedItem,setSelectedItem] =useState(null);
-  
+  const [canrecieve, setCanrecieve] = useState(true);
   useEffect(()=>{
     setIsLoading(true);
     const getData= async()=>{
@@ -48,8 +48,10 @@ const RecieverBB = ({navigation}) => {
     // console.log(item);
     try{
     const TransDetails = await api.get(`/initialiseTransaction/${item.id}?entity_id=1`);
-    console.log("Transdetails" ,TransDetails.request._response.donationCanBeCompletedFully);
-    setIsVisible(true);
+    const CanDonate = JSON.parse(TransDetails.request._response).donorsThatCanDonate;
+    console.log("Transdetails" ,CanDonate);
+    setCanrecieve(CanDonate);
+    setVisible(true);
     setSelectedItem(item);
     }
     catch(err)
@@ -83,9 +85,11 @@ const RecieverBB = ({navigation}) => {
         {selectedItem && (
           <ModalBB 
             navigation={navigation}
+            route={route}
             item={selectedItem}
-            isVisible={isVisible}
-            setIsVisible={setIsVisible}
+            visible={visible}
+            setVisible={setVisible}
+            canrecieve={canrecieve}
             res={res}
           />
         )}

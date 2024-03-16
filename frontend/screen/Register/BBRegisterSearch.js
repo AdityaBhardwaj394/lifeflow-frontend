@@ -15,7 +15,7 @@ const BBRegisterSearch = ({ navigation }) => {
     console.log(text);
     try {
       axios
-        .get(`http://192.168.1.85:8001/search?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000&q=${text}`)
+        .get(`http://192.168.163.190:8001/search?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000&q=${text}`)
         .then(result => {
           // console.log(result.data);
           setRes(result.data);
