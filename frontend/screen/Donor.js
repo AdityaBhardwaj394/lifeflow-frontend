@@ -1,4 +1,4 @@
-import { View, Text, FlatList, ToastAndroid, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, ToastAndroid, Button, StyleSheet, TouchableOpacity,Pressable } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import api from './api';
 import { useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import RegisterModal from './RegisterModal';
 import Icon from 'react-native-vector-icons/Entypo';
 import axios from 'axios';
 import RequestModal from './model/Request_modal';
+import DonorRequest from './model/DonorRequest';
 const Donor = ({ route, navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -16,7 +17,7 @@ const Donor = ({ route, navigation }) => {
   const latitude = userLocation.latitude;
 
   const longitude = userLocation.longitude;
-  const radius = 10000;
+  const radius = 100000;
   const [registerModalVisible, setRegisterModalVisible] = useState(false); 
   const [hReg, setHReg] = useState(false);
 
@@ -25,8 +26,9 @@ const Donor = ({ route, navigation }) => {
 
     const getData = async () => {
       try {
-        const response = await api.get(`/locations?${latitude.toString()}&${longitude.toString()}&${radius}`);
+        const response = await api.get(`/locations/?lat=${latitude.toString()}&lon=${longitude.toString()}&radius=${radius}`);
         setData(response.data);
+        // console.log(respn)
       } catch (err) {
         console.log("Error retrieving data, ", err);
       } finally {
@@ -62,11 +64,11 @@ const Donor = ({ route, navigation }) => {
 
     try {
       const res = axios.get(`http://192.168.163.190:8001/entity/tomtom/${item.id}`).then((res) => {
-        console.log(res.data);
+       
         if (res.data.status == 'true') {
           navigation.navigate('chat', {
             selectedHospital: item.poi,
-            email: res.data.primary_email
+            email: res.data.data.primary_email
           });
         } else {
           setHReg(true);
@@ -91,7 +93,9 @@ const Donor = ({ route, navigation }) => {
         <FlatList
           data={data}
           renderItem={({ item }) => (
-            <View style={styles.hospitalCard}>
+            <Pressable style={styles.hospitalCard} onPress={()=>{
+              console.log("hello world")
+            }}>
               <Text style={styles.hospitalName}>{item.poi.name}</Text>
               <Text style={styles.donorText}>Available Receiver Match: —</Text>
               <View style={styles.buttonContainer}>
@@ -112,7 +116,7 @@ const Donor = ({ route, navigation }) => {
               </View>
              
             
-            </View>
+            </Pressable>
           )}
           keyExtractor={item => item.id}
         />
@@ -128,7 +132,7 @@ const Donor = ({ route, navigation }) => {
         />
       )}
        {selectedHospital && (
-        <RequestModal
+        <DonorRequest
           navigation={navigation}
           route={route}
           hospital={selectedHospital}
