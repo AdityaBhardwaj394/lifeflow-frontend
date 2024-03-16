@@ -21,7 +21,7 @@ const BBRegister = ({ route, navigation }) => {
   const register = async () => {
     try {
       // Create user with email and password
-      // await auth().createUserWithEmailAndPassword(email, password);
+      await auth().createUserWithEmailAndPassword(email, password);
       
       // Dispatch Redux actions
       

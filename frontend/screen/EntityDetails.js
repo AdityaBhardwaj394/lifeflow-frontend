@@ -38,11 +38,10 @@ const EntityDetails = ({navigatoin,route}) => {
   return (
     <View>
       <Text>EntityDetails</Text>
-      <Text>Your match:{totalDonors}</Text>
-      {/* <Text>Total available blood {totalVolume}</Text> */}
-      <Text>{JSON.stringify(totalVolume)}</Text>
+      <Text>Your match: {totalDonors}</Text>
+      <Text>Total available blood: {totalVolume}</Text>
     </View>
-  )
-}
+  );
+};
 
-export default EntityDetails
+export default EntityDetails;

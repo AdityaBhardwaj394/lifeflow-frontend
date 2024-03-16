@@ -69,26 +69,17 @@ const Profile = ({navigation}) => {
     setError(null);
   
     try {
-      const data = {
-        "name": "string",
-        "dob": "2024-03-15",
-        "email": "string",
-        "phone_number": "string",
-        "blood_group": "string",
-        "sex": "string",
-        "profile_url": "string",
-        "location": "string"
-      };
+     
       console.log(id);
-      console.log(data);
-      // Assuming `id` is a valid identifier for the user
+      
+      // Assumng `id` is a valid identifier for the user
       await api.patch(`/user/${id}`, {
-        "name": "string",
+        "name": name,
         "dob": "2024-03-15",
-        "email": "string",
-        "phone_number": "anlogvnsdpn",
-        "blood_group": "string",
-        "sex": "string",
+       // "email": `${email}`,
+        "phone_number": `${phone_number}`,
+        "blood_group": `${blood_group}`,
+        "sex": `${sex}`,
         "profile_url": "string",
         "location": "string"
       }
@@ -153,7 +144,7 @@ const Profile = ({navigation}) => {
         placeholder="Email"
         keyboardType="email-address"
         value={email}
-        onChangeText={setEmail}
+        // onChangeText={setEmail}
       />
       <TextInput
         style={styles.textInput}

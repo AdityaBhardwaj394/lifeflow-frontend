@@ -125,7 +125,7 @@ const RequestBlood = ({navigation, route}) => {
         `http://192.168.163.190:8001/entity/tomtom/${item.id}`,
       );
       if (result.data.status === 'true') {
-        navigation.navigate('EntityDetails', {id: result.data.data.id});
+        // navigation.navigate('EntityDetails', {id: result.data.data.id});
       } else {
         // console.log()
         console.log('Hospital is not available');
