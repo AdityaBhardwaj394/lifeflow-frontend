@@ -74,8 +74,8 @@ const Profile = ({navigation}) => {
       
       // Assumng `id` is a valid identifier for the user
       await api.patch(`/user/${id}`, {
-        "name": name,
-        "dob": "2024-03-15",
+        "name":`${name}` ,
+      //  "dob": "2024-03-15",
        // "email": `${email}`,
         "phone_number": `${phone_number}`,
         "blood_group": `${blood_group}`,

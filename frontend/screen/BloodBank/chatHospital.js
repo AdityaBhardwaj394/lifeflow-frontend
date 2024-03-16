@@ -15,7 +15,7 @@ const ChatHospital = ({ route }) => {
   const username=route.params.username;
   const useremail=route.params.email;
 console.log(username);
-console.log(route.params);
+console.log(useremail);
   useEffect(() => {
     if (socket) {
       socket.emit('register', emailBB); // Replace with the actual user's email
