@@ -10,7 +10,6 @@ import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { setUserEmailRedux, setUserUIDRedux } from '../store/userSlice';
 import { theme } from '../theme/theme';
-import { setBBNameRedux,setBBPhoneno,setBBemailRedux } from '../store/hospitalSlice';
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch();
@@ -25,7 +24,7 @@ export default function Login({ navigation }) {
       const res = await auth().signInWithEmailAndPassword(email, password);
       if (res && res.user) {
         // try {
-        //   const result = await axios.get(`http://192.168.1.85:8001/entity/email/${res.user.email}`);
+        //   const result = await axios.get(`http://192.168.163.190:8001/entity/email/${res.user.email}`);
         //   // console.log(result.data);
         //   if (result.data.length > 0) {
         //     console.log('go the hospital page');
@@ -41,7 +40,7 @@ export default function Login({ navigation }) {
         //console.log('user logged in');
         let status = 'none';
         axios
-          .get(`http://192.168.1.85:8001/user/email/${res.user.email}`)
+          .get(`http://192.168.163.190:8001/user/email/${res.user.email}`)
 
           .then(res => {
             status = 'user';
@@ -52,7 +51,7 @@ export default function Login({ navigation }) {
           })
           .finally(() =>
             axios
-              .get(`http://192.168.1.85:8001/entity/email/${res.user.email}`)
+              .get(`http://192.168.163.190:8001/entity/email/${res.user.email}`)
               .then(res => {
                 status = 'entity';
               })

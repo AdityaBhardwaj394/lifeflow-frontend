@@ -2,13 +2,13 @@ import storage from '@react-native-firebase/storage';
 import axios from "axios";
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
+    Button,
+    Modal,
+    Pressable,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
 } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import { useSelector } from 'react-redux';
@@ -91,7 +91,7 @@ const RequestModal = ({navigation, route, hospital, visible, setVisible}) => {
         setUrl(url1);
         const num = parseInt(vol1)
         console.log(lon," : " ,lat)
-        const resp =await  axios.post(`http://192.168.1.85:8001/initial-request/${num}/?url=${url}`,{
+        const resp =await  axios.post(`http://192.168.163.190:8001/initial-request/${num}/?url=${url}`,{
           email: userEmail,
           lat: lat.toString(), 
           lon: lon.toString(), 

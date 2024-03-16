@@ -18,7 +18,7 @@ const Register = ({ navigation }) => {
     setLoading(true);
     try {
       await auth().createUserWithEmailAndPassword(email, password);
-      await axios.post('http://192.168.1.85:8001/user/create', { email: email });
+      await axios.post('http://192.168.163.190:8001/user/create', { email: email });
       navigation.navigate('login');
     } catch (err) {
       if (err.code === 'auth/email-already-in-use') {

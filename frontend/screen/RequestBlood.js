@@ -31,7 +31,7 @@ const RequestBlood = ({navigation, route}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = `http://192.168.1.85:8001/locations?lat=${lat}&lon=${lon}&radius=${radius}`;
+        let url = `http://192.168.163.190:8001/locations?lat=${lat}&lon=${lon}&radius=${radius}`;
         if (searchText.trim() !== '') {
           url += `&q=${searchText}`;
         }
@@ -48,7 +48,7 @@ const RequestBlood = ({navigation, route}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = `http://192.168.1.85:8001/search?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000&q=${searchText}`;
+        let url = `http://192.168.163.190:8001/search?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000&q=${searchText}`;
        
         const result = await axios.get(url);
         // console.log(result.data);
@@ -68,7 +68,7 @@ const RequestBlood = ({navigation, route}) => {
   const handleRequest = async item => {
     try {
       const result = await axios.get(
-        `http://192.168.1.85:8001/entity/tomtom/${item.id}`,
+        `http://192.168.163.190:8001/entity/tomtom/${item.id}`,
       );
       if (result.data.status === 'true') {
         console.log('eid: ', result.data.data.id);
@@ -78,7 +78,7 @@ const RequestBlood = ({navigation, route}) => {
         } else {
           //show toast
           const stat1 = await axios.get(
-            `http://192.168.1.85:8001/isReceiver/${
+            `http://192.168.163.190:8001/isReceiver/${
               result.data.data.id
             }?user_id=${parseInt(uid)}`,
           );
@@ -90,7 +90,7 @@ const RequestBlood = ({navigation, route}) => {
           } else {
             axios
               .post(
-                `http://192.168.1.85:8001/request/${result.data.data.id}`,
+                `http://192.168.163.190:8001/request/${result.data.data.id}`,
                 {
                   email: email,
                 },
@@ -112,7 +112,7 @@ const RequestBlood = ({navigation, route}) => {
         //3) modal asking to register
         setHReg(true);
         setRegisterModalVisible(true);
-        console.log('Hospital is not available000');
+        console.log('Hospital is not available');
       }
     } catch (err) {
       console.log(err);
@@ -122,7 +122,7 @@ const RequestBlood = ({navigation, route}) => {
     // console.log(item);
     try {
       const result = await axios.get(
-        `http://192.168.1.85:8001/entity/tomtom/${item.id}`,
+        `http://192.168.163.190:8001/entity/tomtom/${item.id}`,
       );
       if (result.data.status === 'true') {
         navigation.navigate('EntityDetails', {id: result.data.data.id});
