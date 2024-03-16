@@ -25,14 +25,33 @@ const RequestBlood = ({navigation, route}) => {
   const lon = useSelector(state => state.user.location.longitude);
   const email = useSelector(state => state.user.email);
   const [uid, setUid] = useState('');
+  const [searchText,setSearchText]=useState('');
   const [hReg, setHReg] = useState(false);
   const [registerModalVisible, setRegisterModalVisible] = useState(false); 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(
-          `http://192.168.163.190:8001/locations?lat=${lat}&lon=${lon}&radius=${radius}`,
-        );
+        let url = `http://192.168.163.190:8001/locations?lat=${lat}&lon=${lon}&radius=${radius}`;
+        if (searchText.trim() !== '') {
+          url += `&q=${searchText}`;
+        }
+        console.log(url);
+        const result = await axios.get(url);
+        // console.log(result.data);
+        setRes(result.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [radius, lat, lon]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let url = `http://192.168.163.190:8001/search?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000&q=${searchText}`;
+       
+        const result = await axios.get(url);
+        // console.log(result.data);
         setRes(result.data);
         const res = await api.get(`/user/email/${email}`);
         //console.log(res.data);
@@ -43,7 +62,8 @@ const RequestBlood = ({navigation, route}) => {
       }
     };
     fetchData();
-  }, [radius, lat, lon]);
+  }, [searchText]);
+  
 
   const handleRequest = async item => {
     try {
@@ -105,7 +125,7 @@ const RequestBlood = ({navigation, route}) => {
         `http://192.168.163.190:8001/entity/tomtom/${item.id}`,
       );
       if (result.data.status === 'true') {
-        navigation.navigate('EntityDetails', {id: result.data.data.id});
+        // navigation.navigate('EntityDetails', {id: result.data.data.id});
       } else {
         // console.log()
         console.log('Hospital is not available');
@@ -116,12 +136,19 @@ const RequestBlood = ({navigation, route}) => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        value={searchText}
+        onChangeText={setSearchText}
+        placeholder="Search Hospital..."
+      />
       <TextInput
         style={styles.input}
         value={radius.toString()}
         onChangeText={text => setRadius(parseInt(text) || 0)}
         keyboardType="numeric"
+        placeholder="Search Radius (meters)"
       />
       <Toast />
       <FlatList
@@ -137,10 +164,9 @@ const RequestBlood = ({navigation, route}) => {
               {borderRadius: 10, borderColor: 'black', borderWidth: 1},
             ]}>
             <View>
-              <Text style={{padding: 10, fontSize: 18}}>{item.poi.name}</Text>
-              <Text>available donors: {}</Text>
-              <Text>{item.id}</Text>
-              <Button title="Request" onPress={() => handleRequest(item)} />
+              <Text style={styles.hospitalName}>{item.poi.name}</Text>
+              <Text style={styles.donorText}>Available Donors: —</Text>
+              <Button title="Request" onPress={() => handleRequest(item)} style={styles.requestButton} />
             </View>
           </Pressable>
         )}
@@ -170,12 +196,40 @@ const RequestBlood = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+  },
   input: {
     borderWidth: 1,
     borderColor: 'black',
     borderRadius: 5,
     padding: 5,
     marginBottom: 10,
+  },
+  hospitalCard: {
+    borderRadius: 10,
+    backgroundColor: '#f5f5f5',
+    padding: 15,
+    marginBottom: 10,
+    shadowColor: '#ccc',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  },
+  hospitalName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  donorText: {
+    fontSize: 16,
+    color: '#888',
+    marginTop: 5,
+  },
+  requestButton: {
+    marginTop: 10,
+    backgroundColor: '#E74C3C',
+    borderRadius: 5,
   },
 });
 

@@ -89,9 +89,10 @@ const RequestModal = ({navigation, route, hospital, visible, setVisible}) => {
       task.then(async () => {
         const url1 = await reference.getDownloadURL();
         setUrl(url1);
+        console.log(url1);
         const num = parseInt(vol1)
         console.log(lon," : " ,lat)
-        const resp =await  axios.post(`http://192.168.163.190:8001/initial-request/${num}/?url=${url}`,{
+        const resp =await  axios.post(`http://192.168.163.190:8001/initial-request/${num}/?url=${url1}`,{
           email: userEmail,
           lat: lat.toString(), 
           lon: lon.toString(), 

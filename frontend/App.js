@@ -36,9 +36,10 @@ const App = () => {
       <Stack.Screen name="TabNavigator" component={TabNavigator}/>
       <Stack.Screen name="Home" component={Home}/>
       <Stack.Screen name="Profile" component={Profile}/>
+      
       <Stack.Screen name="BBRegisterSearch" component={BBRegisterSearch}/>
       <Stack.Screen name="EntityDetails" component={EntityDetails}/>
-      <Stack.Screen name="TabNavigatorBB" component={TabNavigatorBB}/>
+    
     </Stack.Navigator>
     </NavigationContainer>
     </Provider>

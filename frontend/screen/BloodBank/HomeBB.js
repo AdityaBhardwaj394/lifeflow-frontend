@@ -1,6 +1,7 @@
 import auth from '@react-native-firebase/auth'
 import React from 'react'
 import { Button } from 'react-native'
+import { View, Text } from 'react-native'
 const HomeBB = ({navigation}) => {
   const logout =async()=>{
     await auth().signOut().then(()=>{
@@ -9,10 +10,11 @@ const HomeBB = ({navigation}) => {
     })
   }
   return (
-    <>
-    <Button title='logout' onPress={logout}/>
-    </>
+    <View>
+      <Text>HomeBB</Text>
+      <Button title="Logout" onPress={logout}/>
+    </View>
   )
 }
 
-export default HomeBB
+export default HomeBB;
