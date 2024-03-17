@@ -97,7 +97,7 @@ const Donor = ({ route, navigation }) => {
               console.log("hello world")
             }}>
               <Text style={styles.hospitalName}>{item.poi.name}</Text>
-              <Text style={styles.donorText}>Available Receiver Match: —</Text>
+
               <View style={styles.buttonContainer}>
                 <TouchableOpacity style={{
                   paddingLeft: '15%',

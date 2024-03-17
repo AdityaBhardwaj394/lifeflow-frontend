@@ -1,21 +1,14 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import {
-  Button,
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { Button, FlatList, Pressable,TouchableOpacity, StyleSheet, Text, TextInput, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import RegisterModal from './RegisterModal';
 import api from './api';
 import RequestModal from './model/Request_modal';
-
-const RequestBlood = ({navigation, route}) => {
+import axios from 'axios';
+// import { FontAwesome } from 'react-native-vector-icons/';
+import Icon from 'react-native-vector-icons/FontAwesome';
+const RequestBlood = ({ navigation, route }) => {
   const [res, setRes] = useState([]);
   const [selectedHospital, setSelectedHospital] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -25,16 +18,15 @@ const RequestBlood = ({navigation, route}) => {
   const lon = useSelector(state => state.user.location.longitude);
   const email = useSelector(state => state.user.email);
   const [uid, setUid] = useState('');
-  const [searchText,setSearchText]=useState('');
+  const [searchText, setSearchText] = useState('');
   const [hReg, setHReg] = useState(false);
-  const [registerModalVisible, setRegisterModalVisible] = useState(false); 
+  const [registerModalVisible, setRegisterModalVisible] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         let url = `http://192.168.163.190:8001/locations?lat=${lat}&lon=${lon}&radius=${radius}`;
-        
         const result = await axios.get(url);
-        // console.log(result.data);
         setRes(result.data);
       } catch (err) {
         console.log(err);
@@ -42,17 +34,14 @@ const RequestBlood = ({navigation, route}) => {
     };
     fetchData();
   }, [radius]);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         let url = `http://192.168.163.190:8001/search?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000&q=${searchText}`;
-       
         const result = await axios.get(url);
-        // console.log(result.data);
         setRes(result.data);
         const res = await api.get(`/user/email/${email}`);
-        //console.log(res.data);
         setVerified(res.data.verified);
         setUid(res.data.id.toString());
       } catch (err) {
@@ -61,16 +50,14 @@ const RequestBlood = ({navigation, route}) => {
     };
     fetchData();
   }, [searchText]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         let url = `http://192.168.163.190:8001/search?lat=${lat.toString()}&lon=${lon.toString()}&radius=10000`;
-       
         const result = await axios.get(url);
-        // console.log(result.data);
         setRes(result.data);
         const res = await api.get(`/user/email/${email}`);
-        //console.log(res.data);
         setVerified(res.data.verified);
         setUid(res.data.id.toString());
       } catch (err) {
@@ -79,7 +66,6 @@ const RequestBlood = ({navigation, route}) => {
     };
     fetchData();
   }, []);
-  
 
   const handleRequest = async item => {
     try {
@@ -87,12 +73,10 @@ const RequestBlood = ({navigation, route}) => {
         `http://192.168.163.190:8001/entity/tomtom/${item.id}`,
       );
       if (result.data.status === 'true') {
-        console.log('eid: ', result.data.data.id);
         if (!verified) {
           setVisible(true);
           setSelectedHospital(item);
         } else {
-          //show toast
           const stat1 = await axios.get(
             `http://192.168.163.190:8001/isReceiver/${
               result.data.data.id
@@ -125,7 +109,6 @@ const RequestBlood = ({navigation, route}) => {
           }
         }
       } else {
-        //3) modal asking to register
         setHReg(true);
         setRegisterModalVisible(true);
         console.log('Hospital is not available');
@@ -134,16 +117,15 @@ const RequestBlood = ({navigation, route}) => {
       console.log(err);
     }
   };
+
   const handleNavigation = async item => {
-    // console.log(item);
     try {
       const result = await axios.get(
         `http://192.168.163.190:8001/entity/tomtom/${item.id}`,
       );
-      if (result.data.status === 'true') {
-        // navigation.navigate('EntityDetails', {id: result.data.data.id});
+      if (result.data.status === 'false') {
+        navigation.navigate('EntityDetails', {id: result.data.data.id});
       } else {
-        // console.log()
         console.log('Hospital is not available');
       }
     } catch (err) {
@@ -153,12 +135,15 @@ const RequestBlood = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        value={searchText}
-        onChangeText={setSearchText}
-        placeholder="Search Hospital..."
-      />
+      <View style={styles.inputContainer}>
+  <TextInput
+    style={styles.input}
+    value={searchText}
+    onChangeText={setSearchText}
+    placeholder="Search Hospital..."
+  />
+  <Icon name="search" size={24} color="black" />
+</View>
       <TextInput
         style={styles.input}
         value={radius.toString()}
@@ -168,30 +153,56 @@ const RequestBlood = ({navigation, route}) => {
       />
       <Toast />
       <FlatList
-  data={res}
-  keyExtractor={item => item.id.toString()}
-  renderItem={({item}) => (
-    <Pressable
-      onPress={() => handleNavigation(item)}
-      style={({pressed}) => [
-        {
-          backgroundColor: pressed ? 'lightgray' : 'white',
-        },
-        {borderRadius: 10, borderColor: 'black', borderWidth: 1,},
-      ]}>
-      <View>
-        <Text style={styles.hospitalName}>{item.poi.name}</Text>
-        <Text style={styles.donorText}>Available Donors: —</Text>
-        <Button
-          title="Request"
-          onPress={() => handleRequest(item)}
-          style={styles.requestButton}
-        />
-      </View>
-    </Pressable>
-  )}
-  ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-/>
+        data={res}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({ item }) => (
+          // <Pressable
+          //   onPress={() => handleNavigation(item)}
+          //   style={({ pressed }) => [
+          //     {
+          //       backgroundColor: pressed ? 'lightgray' : 'white',
+          //     },
+          //     styles.hospitalCard,
+          //   ]}>
+          //   <View>
+          //     <Text style={styles.hospitalName}>{item.poi.name}</Text>
+             
+          //     <Button
+          //       title="Request"
+          //       onPress={() => handleRequest(item)}
+          //       style={styles.requestButton}
+          //       color="tomato"
+          //     />
+          //   </View>
+          // </Pressable>
+          <Pressable style={styles.hospitalCard} onPress={()=>{
+            handleNavigation(item)
+          }}>
+            <Text style={styles.hospitalName}>{item.poi.name}</Text>
+
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={{
+                paddingLeft: '15%',
+              }}>
+               
+             
+              </TouchableOpacity>
+              <View style={{
+                paddingLeft: '15%',
+                width:'50%',
+                marginLeft:'15%'
+
+              }}>
+                <Button title="Request" onPress={() => handleRequest(item)} color="tomato" />
+                <Text></Text>
+              </View>
+            </View>
+           
+          
+          </Pressable>
+        )}
+        ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+      />
 
       {!verified && (
         <RequestModal
@@ -225,8 +236,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'black',
     borderRadius: 5,
-    padding: 5,
+    padding: 10,
     marginBottom: 10,
+    flexDirection: 'row', // Make the input and icon align horizontally
+    alignItems: 'center', // Center the icon vertically
   },
   hospitalCard: {
     borderRadius: 10,
@@ -237,6 +250,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
+    borderColor: 'blue',
+    borderWidth: 1,
   },
   hospitalName: {
     fontSize: 20,
@@ -244,14 +259,14 @@ const styles = StyleSheet.create({
   },
   donorText: {
     fontSize: 16,
-    color: '#888',
+    color: 'red',
     marginTop: 5,
   },
   requestButton: {
-    marginTop: 10,
-    backgroundColor: '#E74C3C',
-    borderRadius: 5,
-  },
+marginTop: 10,
+backgroundColor: 'red',
+borderRadius: 5,
+},
 });
 
 export default RequestBlood;

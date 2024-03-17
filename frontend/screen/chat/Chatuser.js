@@ -12,7 +12,6 @@ const Chatuser = ({ route }) => {
   const [messages, setMessages] = useState([]);
   const hospitalemail=route.params.email;
   console.log(hospitalemail);
-  
   useEffect(() => {
     if (socket) {
       socket.emit('register', email); // Replace with the actual user's email

@@ -33,15 +33,12 @@ const Profile = ({navigation}) => {
   // console.log(userEmail);
   useEffect(()=>{
 
-    setEmail(userEmail);
-    setLocation(userLocation);
-    console.log("location",location);
-    console.log("email",email);
+
 
     const getData = async() => {
       setError(null);
       try{
-        const response = await api.get(`/user/email/${userEmail}`);
+        const response = (await api.get(`/user/email/${userEmail}`));
         console.log("response"+response.data);
         setName(response.data.name);
         setAge(response.data.dob);
@@ -59,7 +56,10 @@ const Profile = ({navigation}) => {
       setError('Failed to get data. Please refresh again.');
     }
     }
-
+    setEmail(userEmail);
+    setLocation(userLocation);
+    console.log("location",userLocation);
+    console.log("email",userEmail);
     getData(); 
   },[]) 
 
@@ -70,9 +70,11 @@ const Profile = ({navigation}) => {
   
     try {
      
-      console.log(id);
+      console.log('id',id);
       
       // Assumng `id` is a valid identifier for the user
+      const udata = (await api.get(`/user/${parseInt(id)}`)).data;
+      console.log('r.....',udata.data);
       await api.patch(`/user/${id}`, {
         "name":`${name}` ,
       //  "dob": "2024-03-15",

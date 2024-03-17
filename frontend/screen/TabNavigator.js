@@ -30,7 +30,7 @@ const TabNavigator = () => {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Home" component={Home}  />
       <Tab.Screen name="Donate" component={Donor} />
       <Tab.Screen name="RequestBlood" component={RequestBlood} />
     </Tab.Navigator>

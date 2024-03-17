@@ -10,6 +10,8 @@ import { setUserEmailRedux, setUserLocation, setUserUIDRedux } from '../store/us
 const Splash = ({navigation}) => {
   const dispatch = useDispatch();
   const [location, setLocation] = useState(false);
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
 
   useEffect(() => {
     const getLocation = async () => {
@@ -19,6 +21,8 @@ const Splash = ({navigation}) => {
         Geolocation.getCurrentPosition(
           position => {
             dispatch(setUserLocation({latitude: position.coords.latitude, longitude: position.coords.longitude}));
+            setLatitude(position.coords.latitude);
+            setLongitude(position.coords.longitude);
           },
           error => {
           //  console.log(error.code, error.message);
