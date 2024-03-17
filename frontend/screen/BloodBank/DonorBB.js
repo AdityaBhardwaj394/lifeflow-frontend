@@ -1,4 +1,4 @@
-import { View, Text,FlatList} from 'react-native'
+import { View, Text,FlatList,StyleSheet} from 'react-native'
 import { useState,useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import api from '../api';
@@ -56,6 +56,7 @@ const DonorBB = ({navigation}) => {
 
   return (
     <View>
+    <Text style={styles.header}>Donors</Text>
   <FlatList
   data={list.length > userlist.length ? list : userlist} 
   renderItem={({ item, index }) => (
@@ -82,5 +83,27 @@ const DonorBB = ({navigation}) => {
         
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  header: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    margin: 8,
+    borderBottomColor: "red",
+    borderBottomWidth:2,
+  },
+  itemContainer: {
+    borderRadius: 10,
+    borderColor: 'black',
+    borderWidth: 1,
+    padding: 15,
+    marginBottom: 10,
+  },
+});
 
 export default DonorBB;
