@@ -1,4 +1,4 @@
-import { View, Text,FlatList,TouchableOpacity } from 'react-native'
+import { View, Text,FlatList,TouchableOpacity,StyleSheet } from 'react-native'
 import { useState,useEffect } from 'react';
 import React from 'react'
 import api from '../api'
@@ -51,7 +51,7 @@ const RecieverBB = ({navigation,route}) => {
     const TransDetails = await api.get(`/initialiseTransaction/${item.id}?entity_id=1`);
     const CanDonate = JSON.parse(TransDetails.request._response).donorsThatCanDonate;
     const users = CanDonate.map(donor => donor.donor.user_info);
-    console.log("Transdetails" ,users);
+    console.log("Transdetails" ,CanDonate);
     setCanrecieve(CanDonate);
     setVisible(true);
     setSelectedItem(item);
@@ -66,21 +66,17 @@ const RecieverBB = ({navigation,route}) => {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
+    <Text style={styles.header}>Receivers</Text>
        <FlatList
         data={list}
         renderItem={({item}) => 
         <TouchableOpacity onPress={() => initTrans(item)}>
-        <View  style={{
-          borderRadius: 10,
-          borderColor: 'black',
-          borderWidth: 1,
-          padding:15,
-          marginBottom: 10,
-        }}>
-        <Text>{item.name}  {item.blood_group}</Text>
+        <View  style={styles.itemContainer}>
+        <Text style={styles.itemName}>{item.name}</Text>
+        <Text style={styles.itemBloodGroup}>Blood Group: {item.blood_group} </Text>
         
-        <Text>{item.volumeRequiredWhileReceiving}</Text>
+        <Text style={styles.itemVolume} >Volume: {item.volumeRequiredWhileReceiving}</Text>
         </View>
         </TouchableOpacity>
         }/>
@@ -100,5 +96,39 @@ const RecieverBB = ({navigation,route}) => {
         </View>
   )
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  header: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    margin: 8,
+    borderBottomColor: "red",
+    borderBottomWidth:2,
+  },
+  itemContainer: {
+    borderRadius: 10,
+    borderColor: 'black',
+    borderWidth: 1,
+    padding: 15,
+    margin: 13,
+  },
+  itemName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  itemBloodGroup: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  itemVolume: {
+    fontSize: 14,
+  },
+});
 
 export default RecieverBB;
