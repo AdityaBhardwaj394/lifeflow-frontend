@@ -26,8 +26,8 @@ const RecieverBB = ({navigation,route}) => {
 
         setRes(response.data);
 
-        // const recieverlist = await api.get(`/waitlist/${response.data.id}`);
-        const recieverlist = await api.get(`/waitlist/1`);
+        const recieverlist = await api.get(`/waitlist/${response.data.id}`);
+        // const recieverlist = await api.get(`/waitlist/1`);
         setList(recieverlist.data);
         // console.log("reciever list",recieverlist.data);
 
@@ -48,7 +48,7 @@ const RecieverBB = ({navigation,route}) => {
   const initTrans=async(item)=>{
     // console.log(item);
     try{
-    const TransDetails = await api.get(`/initialiseTransaction/${item.id}?entity_id=1`);
+    const TransDetails = await api.get(`/initialiseTransaction/${item.id}?entity_id=${res.id}`);
     const CanDonate = JSON.parse(TransDetails.request._response).donorsThatCanDonate;
     const users = CanDonate.map(donor => donor.donor.user_info);
     console.log("Transdetails" ,CanDonate);

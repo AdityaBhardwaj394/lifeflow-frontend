@@ -142,7 +142,7 @@ const RequestBlood = ({ navigation, route }) => {
     onChangeText={setSearchText}
     placeholder="Search Hospital..."
   />
-  <Icon name="search" size={24} color="black" />
+  {/* <Icon name="search" size={24} color="black" /> */}
 </View>
       <TextInput
         style={styles.input}
@@ -190,6 +190,7 @@ const RequestBlood = ({ navigation, route }) => {
               <View style={{
                 paddingLeft: '15%',
                 width:'50%',
+                paddingTop:"7%",
                 marginLeft:'15%'
 
               }}>

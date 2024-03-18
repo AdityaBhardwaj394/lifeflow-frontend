@@ -24,8 +24,9 @@ const DonorBB = ({navigation}) => {
         setRes(response.data);
         setId(response.data.id);
 
-        const donorlist = await api.get(`/donors/1`);
-        // const donorlist = await api.get(`/donors/${id}`);
+        // const donorlist = await api.get(`/donors/1`);
+        console.log(res.id);
+        const donorlist = await api.get(`/donors/${response.data.id}`);
         setList(donorlist.data);
         console.log("donor list",donorlist.data);
         for(let i=0;i<donorlist.data.length;i++){
