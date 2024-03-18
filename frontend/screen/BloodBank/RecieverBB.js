@@ -26,8 +26,8 @@ const RecieverBB = ({navigation,route}) => {
 
         setRes(response.data);
 
-        // const recieverlist = await api.get(`/waitlist/${response.data.id}`);
-        const recieverlist = await api.get(`/waitlist/1`);
+        const recieverlist = await api.get(`/waitlist/${response.data.id}`);
+        // const recieverlist = await api.get(`/waitlist/1`);
         setList(recieverlist.data);
         // console.log("reciever list",recieverlist.data);
 
