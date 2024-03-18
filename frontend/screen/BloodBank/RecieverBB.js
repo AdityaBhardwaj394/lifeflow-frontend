@@ -48,7 +48,7 @@ const RecieverBB = ({navigation,route}) => {
   const initTrans=async(item)=>{
     // console.log(item);
     try{
-    const TransDetails = await api.get(`/initialiseTransaction/${item.id}?entity_id=1`);
+    const TransDetails = await api.get(`/initialiseTransaction/${item.id}?entity_id=${res.id}`);
     const CanDonate = JSON.parse(TransDetails.request._response).donorsThatCanDonate;
     const users = CanDonate.map(donor => donor.donor.user_info);
     console.log("Transdetails" ,CanDonate);

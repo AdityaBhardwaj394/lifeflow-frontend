@@ -5,14 +5,10 @@ const ModalBB = ({navigation,route,item,visible,setVisible,canrecieve,res,donoru
 
     const Proceed=async()=>{
         try{
-            const data ={
-                user_id: item.id,
-                entity_id: 1,
-            }
             console.log("item.id",item.id);
-            await api.post(`/completeTransaction/${item.id}?entity_id=1`, {
+            await api.post(`/completeTransaction/${item.id}?entity_id=${res.id}`, {
                 user_id: item.id,
-                entity_id: "1",
+                entity_id: res.id,
             });
             ToastAndroid.show('Transaction has successfully completed', ToastAndroid.LONG);
         }
